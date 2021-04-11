@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Getting up and running with Nginx [CentOS] | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/b.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Getting up and running with Nginx [CentOS]</h1>
+<div class="meta">
+  
+  
+  <time datetime="2012-08-14">August 14, 2012</time>
+</div>
+
+<p>While I&rsquo;m on the topic of upgrading and installing server software, why not go quickly into how I get nginx set up on my centOS boxes.</p>
+<p>It&rsquo;s a super simple process as there&rsquo;s an official RHEL/centOS nginx yum repository.</p>
+<p>Basically, given a new server I would remove apache/httpd with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">yum remove httpd
+</code></pre></div><p>Then create a file named /etc/yum.repos.d/nginx.repo and paste the configuration below within it:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#66d9ef">[nginx]</span>
+<span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">nginx repo</span>
+<span style="color:#a6e22e">baseurl</span><span style="color:#f92672">=</span><span style="color:#e6db74">http://nginx.org/packages/centos/$releasever/$basearch/</span>
+<span style="color:#a6e22e">gpgcheck</span><span style="color:#f92672">=</span><span style="color:#e6db74">0</span>
+<span style="color:#a6e22e">enabled</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
+</code></pre></div><p><!-- raw HTML omitted -->Then it&rsquo;s a simply matter of running</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">yum -y install nginx
+chkconfig nginx on
+service nginx start
+</code></pre></div><p>And hey presto, your shiny new web server should be all up and running.</p>
+<p>For the full install guide, check out <a href="http://wiki.nginx.org/Install">http://wiki.nginx.org/Install</a></p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/linux">#linux</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/centos">#CentOS</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/nginx">#nginx</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/server">#server</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/getting-up-and-running-with-nginx
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/installing-perl-from-source/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/a-shiny-new-pie-raspberry-pi-that-is/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

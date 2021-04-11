@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/git/</link>
+    <description>Recent content in git on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 02 Oct 2012 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Should haves; Would haves; Could haves; OR How version control could have saved my ass</title>
+      <link>https://jarrod.linahan.id.au/blog/version-control-could-have-saved-my-ass/</link>
+      <pubDate>Tue, 02 Oct 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/version-control-could-have-saved-my-ass/</guid>
+      <description>So lately I&amp;rsquo;ve been working on a few projects in my spare time (Which, I might add, I&amp;rsquo;ve had a lot of the past few weeks), and things have been going swimmingly.
+I&amp;rsquo;m finally coming to grips with the intricacies of Java, and have a little Android app that is almost ripe for the picking.
+I have also been getting down and dirty with a little Perl, having build a decent framework for a CMS for a friend.</description>
+    </item>
+    
+  </channel>
+</rss>

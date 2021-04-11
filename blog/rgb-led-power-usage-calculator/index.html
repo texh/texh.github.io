@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Science Sunday: RGB LED Power Consumption Calculator | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/math-lh.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Science Sunday: RGB LED Power Consumption Calculator</h1>
+<div class="meta">
+  
+  
+  <time datetime="2020-06-07">June 7, 2020</time>
+</div>
+
+<p>Before delving much-too-far down the rabbit hole of flashy, over-engineered lamp repairs and Arduino funtimes, I thought it advantageous to take an educated guess at the maximum power consumption of replacing some existing LEDs in a friends now-exploded lamp with WS2812 &ldquo;<a href="https://core-electronics.com.au/search/?q=neopixel+stick">NeoPixel Stick</a>&rdquo; clones.</p>
+
+<div id="calculator">
+  <table>
+    <tr>
+      <th>Num. LEDs</th>
+      <td><number v-model="inputs.numLeds" :min="0" /></td>
+      <td></td>
+      <td><span class="swatch" :style="`background-color: ${bgcolor}; color: ${out.totalBrightness < 70 ? '#fff' : '#000'}`">{{ bgcolor }}</span></td>
+    </tr>
+    
+    <tr>
+      <th>Red mA</th>
+      <th>Green mA</th>
+      <th>Blue mA</th>
+      <th>Max mA</th>
+    </tr>
+    
+    <tr>
+      <td><number v-model="inputs.redMa" :min="0" /></td> 
+      <td><number v-model="inputs.greenMa" :min="0" /></td> 
+      <td><number v-model="inputs.blueMa" :min="0" /></td> 
+      <td>{{ out.rgbMa }}</td>
+    </tr>
+
+    <tr>
+      <th>Red %</th>
+      <th>Green %</th>
+      <th>Blue %</th>
+      <th>Total Bright.</th>
+    </tr>
+    
+    <tr>
+      <td><number v-model="inputs.red" :min="0" :max="100" /></td>
+      <td><number v-model="inputs.green" :min="0" :max="100" /></td>
+      <td><number v-model="inputs.blue" :min="0" :max="100" /></td>
+      <td>{{ out.totalBrightness | toFixed(2) }}%</td>
+    </tr>
+
+    <tr>
+      <th>Red Val</th>
+      <th>Green Val</th>
+      <th>Blue Val</th>
+      <th></th>
+    </tr>
+    
+    <tr>
+      <td>{{ out.redVal }}</td>
+      <td>{{ out.greenVal }}</td>
+      <td>{{ out.blueVal }}</td>
+      <td></td>
+    </tr>
+    
+    <tr>
+      <th colspan="4">Power Usage</th>
+    </tr>
+    
+    <tr>
+      <th>mA</th>
+      <th>A</th>
+      <th>Volts</th>
+      <th>Watts</th>
+    </tr>
+    
+    <tr>
+      <td>{{ out.ma | toFixed(1) }}</td>
+      <td>{{ out.amp | toFixed(3) }}</td>
+      <td><number v-model="inputs.volts" :min=0 /></td>
+      <td>{{ out.watts | toFixed(2) }}</td>
+    </tr>
+  </table>  
+</div>
+
+<style type="text/css">
+#toc { display: none }
+#calculator {
+  max-width: 100%;
+  overflow-y: auto;
+  background: #fff;
+}
+
+#calculator table {
+  margin: 0;
+  border-radius: 4px;
+}
+
+#calculator input[type=text],
+#calculator input[type=number] {
+  max-width: 100%;
+  width: 100%;
+  display: inline-block;
+}
+
+#calculator th {
+  font-weight: bold;
+}
+
+#calculator td,
+#calculator th {
+  border: solid 1px #ddd;
+  padding: 3px;
+  white-space: nowrap;
+}
+
+#calculator .swatch {
+  background: hotpink;
+  display: block;
+  text-align: center;
+  font-size: 0.9em;
+  line-height: 1.7em;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+<script type="text/javascript">
+Vue.component('number', {
+  props: {
+    value: {
+      type: String|Number,
+      default: 0
+    },
+    min: {
+      type: Number,
+      default: null
+    },
+    max: {
+      type: Number,
+      default: null
+    }
+  },
+  
+  computed: {
+    v: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        val = parseFloat(val || 0)
+        if (this.min !== null && val < this.min) {
+          val = this.min
+        } else if (this.max != null && val > this.max) {
+          val = this.max
+        }
+        this.$emit('input', val)
+      }
+    }
+  },
+  template: `<input type="number" v-model="v" :min="min" :max="max"></input>`
+})
+
+new Vue({
+  el: "#calculator",
+
+  data: {
+    inputs: {
+      numLeds: 16,
+      redMa: 20,
+      greenMa: 20,
+      blueMa: 20,
+      red: 100,
+      green: 100,
+      blue: 100,
+      volts: 5
+    }
+  },
+  
+  filters: {
+    toFixed (val, decimal=2) {
+      return (val || 0)
+          .toFixed(decimal)
+          .replace(/[.]0+$/, '')
+    }
+  },
+  
+  computed: {
+    // Because "10" + "10" + "10" != 30
+    numInputs () {
+      const out = {}
+      for (const k of Object.keys(this.inputs)) {
+        out[k] = val = parseFloat(this.inputs[k] || 0)
+      }
+      return out
+    },
+    
+    bgcolor () {
+      let out = '#'
+      for (const c of ['red', 'green', 'blue']) {
+        out += Number(this.out[`${c}Val`]).toString(16).padStart(2, '0')
+      }
+      return out
+    },
+
+    out () {
+      const inputs = this.numInputs
+      const out = { inputs }
+      out.rgbMa = inputs.redMa
+          + inputs.greenMa
+          + inputs.blueMa
+      
+      out.ma = (
+          (inputs.redMa * inputs.red / 100)
+          + (inputs.greenMa * inputs.green / 100)
+          + (inputs.blueMa * inputs.blue / 100)
+      ) * inputs.numLeds
+      out.amp = out.ma / 1000
+
+      out.totalBrightness = (
+          inputs.red
+          + inputs.green 
+          + inputs.blue
+      ) / 3
+      
+      out.redVal = Math.round(255/100 * inputs.red)
+      out.greenVal = Math.round(255/100 * inputs.green)
+      out.blueVal = Math.round(255/100 * inputs.blue)
+      out.watts = out.amp * inputs.volts
+      return out
+    }
+  }
+})
+</script>
+
+
+<p>This calculator is not super-scientific.</p>
+<ul>
+<li>There may be some inconsistencies due to rounding of values.</li>
+<li>Even if you have all LEDs at 0% brightness, some power will still be used (though minimal).</li>
+<li>I doubt (though have no proof) that the relationship between <code>percentage brightness</code> and <code>power consumption</code> scales linearly.</li>
+</ul>
+<p>On the off-chance you hate JavaScript, or would just prefer an offline version of this calculator, you can download an <a href="/uploads/science-sunday/led-calc.ods">Open/LibreOffice</a> or <a href="/uploads/science-sunday/led-calc.xlsx">Excel</a> spreadsheet version.
+There&rsquo;s also a copy <a href="https://jsfiddle.net/txnrf35j/">available on JSFiddle</a> if you want to have a tinker.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/arduino">#arduino</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/neopixel">#NeoPixel</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/led">#LED</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/calculator">#calculator</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/science-sunday">Science Sunday</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/allow-only-cloudflare-traffic-to-web-server/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/how-probably-not-to-secure-ssh/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

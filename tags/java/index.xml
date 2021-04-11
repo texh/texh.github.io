@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/java/</link>
+    <description>Recent content in java on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Apr 2014 00:24:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js vs Java Play! Framework</title>
+      <link>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</link>
+      <pubDate>Thu, 03 Apr 2014 00:24:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</guid>
+      <description>After having somewhat of a heated Facebook conversation with a friend about the Ups and Downs of various web frameworks, I was inspired to benchmark a simple &amp;ldquo;Hello World&amp;rdquo; to compare the speed and resource usage of Node.js and the Play! Framework (using Java).
+Being mostly Perl guys ourselves, my go-to tool for web wizardry is generally the awesome Catalyst MVC framework, can&amp;rsquo;t say the same about my friend.
+All the tests below were completed on my Laptop – Intel Core i5 M480 CPU @ 2.</description>
+    </item>
+    
+    <item>
+      <title>Convert bytes to readable units in Perl/Java/PHP</title>
+      <link>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</link>
+      <pubDate>Wed, 06 Feb 2013 18:00:54 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</guid>
+      <description>I recently used code similar to that below in VPSMon, and came across a need where it would be convenient to display bytes as a more human-friendly string in Perl. Basically I’m building a script, and I want to convert the amount of available/free RAM on a machine from bytes to gigabytes for display to a user, but I figured may as well cover all bases and have this around in case it needs to display other units/multiples in the future.</description>
+    </item>
+    
+  </channel>
+</rss>

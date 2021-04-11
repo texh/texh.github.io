@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Convert bytes to readable units in Perl/Java/PHP | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/math.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Convert bytes to readable units in Perl/Java/PHP</h1>
+<div class="meta">
+  
+  
+  <time datetime="2013-02-06">February 6, 2013</time>
+</div>
+
+<p>I recently used code similar to that below in <a href="/portfolio/vpsmon">VPSMon</a>, and came across a need where it would be convenient to display bytes as a more human-friendly string in Perl. Basically I’m building a script, and I want to convert the amount of available/free RAM on a machine from bytes to gigabytes for display to a user, but I figured may as well cover all bases and have this around in case it needs to display other units/multiples in the future.</p>
+<p>So, with a little bit of tweaking, here it is!</p>
+<p>Pass bytes as the first argument, and optionally a ‘truesy’ second argument if you’d rather the multiplier of 1000 vs the default 1024.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl"><span style="color:#66d9ef">sub</span> <span style="color:#a6e22e">bytes_to_human</span> {
+  <span style="color:#66d9ef">my</span> ($bytes, $mul) <span style="color:#f92672">=</span> @_;
+  <span style="color:#66d9ef">return</span> $bytes <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34; B&#34;</span> <span style="color:#66d9ef">if</span> ($bytes <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1024</span>);
+  $mul <span style="color:#f92672">=</span> $mul ? <span style="color:#ae81ff">1000</span> : <span style="color:#ae81ff">1024</span>;
+
+  <span style="color:#66d9ef">my</span> $exp <span style="color:#f92672">=</span> int(log($bytes) <span style="color:#f92672">/</span> log($mul));
+  <span style="color:#66d9ef">my</span> @pre <span style="color:#f92672">=</span> <span style="color:#e6db74">qw/ K M G T P E /</span>;
+  <span style="color:#66d9ef">my</span> $pre <span style="color:#f92672">=</span> $pre[$exp<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">.</span> ( $mul <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span> ? <span style="color:#e6db74">&#39;i&#39;</span> : <span style="color:#e6db74">&#39;&#39;</span> );
+  <span style="color:#66d9ef">return</span> sprintf(<span style="color:#e6db74">&#34;%.2f %sB&#34;</span>, ($bytes <span style="color:#f92672">/</span> POSIX::pow($mul, $exp)), $pre);
+}
+</code></pre></div><p><em><strong>Edit</strong></em> Turns out I found that Java code from VPSMon :)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">bytes2human</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> bytes<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bytes <span style="color:#f92672">&lt;</span> 1024<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> bytes <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; B&#34;</span><span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">int</span> exp <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>bytes<span style="color:#f92672">)</span> <span style="color:#f92672">/</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">));</span>
+  <span style="color:#66d9ef">char</span> pre <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;KMGTPE&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>exp<span style="color:#f92672">-</span>1<span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">return</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%.2f %sB&#34;</span><span style="color:#f92672">,</span> bytes <span style="color:#f92672">/</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">pow</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">,</span> exp<span style="color:#f92672">),</span> pre<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><em><strong>Another Edit</strong></em> Turns out I still write PHP sometimes</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">bytesToHuman</span> ($bytes, $mul <span style="color:#f92672">=</span> <span style="color:#ae81ff">1024</span>) {
+  <span style="color:#66d9ef">if</span> ($bytes <span style="color:#f92672">&lt;</span> $mul) {
+      <span style="color:#66d9ef">return</span> $bytes <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;B&#34;</span>;
+  }
+
+  $exp <span style="color:#f92672">=</span> <span style="color:#a6e22e">floor</span>(<span style="color:#a6e22e">log</span>($bytes) <span style="color:#f92672">/</span> <span style="color:#a6e22e">log</span>($mul));
+  $units <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;K&#39;</span>, <span style="color:#e6db74">&#39;M&#39;</span>, <span style="color:#e6db74">&#39;G&#39;</span>, <span style="color:#e6db74">&#39;T&#39;</span>, <span style="color:#e6db74">&#39;P&#39;</span>, <span style="color:#e6db74">&#39;E&#39;</span>];
+  $pre <span style="color:#f92672">=</span> $units[$exp<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">.</span> ($mul <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#39;i&#39;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sprintf</span>(<span style="color:#e6db74">&#34;%.2f %sB&#34;</span>, ($bytes <span style="color:#f92672">/</span> <span style="color:#a6e22e">pow</span>($mul, $exp)), $pre);
+}
+</code></pre></div>
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/perl">#perl</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/php">#php</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/java">#java</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/convert-bytes-to-readable-units-in-perl
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/another-year-another-android-app/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/lnppcf-vs-lamp/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

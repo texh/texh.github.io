@@ -1,0 +1,161 @@
+@import url('./base.css');
+
+:root,
+.theme-dark,
+.theme-light {
+  --links: #686de0;
+  --focus: #686de0;
+  --selection: #9e9e9e;
+}
+
+:root, .theme-light {
+    --text-main: #666;
+    --text-bright: #222222;
+    --text-muted: #888888;
+    --background: #efefef;
+}
+
+.theme-dark {
+  --text-main: #bbb;
+  --text-bright: #ccc;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* util */
+.center {
+    text-align: center;
+}
+
+
+/* header */
+header {
+    display: flex;
+    background: initial;
+}
+
+header nav {
+    margin-left: auto;
+    padding: 10px;
+}
+
+header nav ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    list-style-type: none;
+}
+
+header nav li a,
+header nav li a:hover {
+    display: block;
+    padding: 5px 8px;
+    font-size: 0.85em;
+    text-decoration: none;
+}
+
+header .btn-theme {
+  margin-left: 10px;
+}
+
+/* Page header image */
+.head-img {
+    text-align: center;
+    padding: 40px 0 40px 0;
+}
+
+.head-img img {
+    max-width: 80px;
+    height: 80px;
+}
+
+/* "main?" content wrapper? fuck knows */
+main {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    flex-grow: 1;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+
+/* Posts & post list*/
+article {
+  width: 100%;
+  padding: 10px;
+}
+article h1,
+article .meta {
+    text-align: center;
+}
+
+.post-list-year {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+ul.post-list {
+    list-style: none;
+    margin: 5px 0;
+    padding-left: 0;
+    width: 100%;
+}
+
+ul.post-list > li {
+    display: flex;
+    padding: 5px 0;
+}
+
+.post-list a {
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--text-muted);
+    text-overflow: ellipsis;
+    text-decoration: none;
+    padding: 2px 0;
+}
+
+.post-list a:hover {
+    color: var(--links);
+}
+
+.post-list time {
+  background: initial;
+  color: var(--text-muted);
+  width: 70px;
+  white-space: nowrap;
+}
+
+.meta time {
+    display: inline-block;
+    width: 60px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    width: auto;
+    background: initial;
+}
+
+pre,
+code {
+    background: #272822;
+    color: #fff;
+}
+
+code {
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 600px) {
+  pre {
+    margin-left: -10px;
+    margin-right: -10px;
+    border-radius: 0;
+    padding: 0px;
+    font-size: 1.1em;
+  }
+}

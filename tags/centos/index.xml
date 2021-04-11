@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CentOS on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/centos/</link>
+    <description>Recent content in CentOS on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Aug 2012 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting up and running with Nginx [CentOS]</title>
+      <link>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</guid>
+      <description>While I&amp;rsquo;m on the topic of upgrading and installing server software, why not go quickly into how I get nginx set up on my centOS boxes.
+It&amp;rsquo;s a super simple process as there&amp;rsquo;s an official RHEL/centOS nginx yum repository.
+Basically, given a new server I would remove apache/httpd with
+yum remove httpd Then create a file named /etc/yum.repos.d/nginx.repo and paste the configuration below within it:
+[nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/$releasever/$basearch/ gpgcheck=0 enabled=1 Then it&amp;rsquo;s a simply matter of running</description>
+    </item>
+    
+    <item>
+      <title>Installing Perl from source</title>
+      <link>https://jarrod.linahan.id.au/blog/installing-perl-from-source/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/installing-perl-from-source/</guid>
+      <description>So I&amp;rsquo;ve done this a few times now, and every time I go to Google to find the same article just to make sure that I follow similar, if not the same, steps.
+You may be thinking &amp;ldquo;Ch&amp;rsquo;yeah, it&amp;rsquo;s just a simple configure, make, make install&amp;rdquo;, or a quick poke on the Yum stick, but maybe not. It is a good idea to keep &amp;lsquo;The Old Perl&amp;rsquo; (generally 5.8.8 as I&amp;rsquo;m a centOS sucker) as removing it via yum would remove a whole bunch of other things that rely on it.</description>
+    </item>
+    
+    <item>
+      <title>Change centOS local timezone</title>
+      <link>https://jarrod.linahan.id.au/blog/change-centos-local-timezone/</link>
+      <pubDate>Sat, 04 Aug 2012 18:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/change-centos-local-timezone/</guid>
+      <description>So today I was taking a look at those lovely lovely photos that I brought over to the blog from instagram, and rearranging some other bits and pieces, when I realised that the timestamps on said images were well off what times I remembered actually taking the photos..
+So I took a look at what the &amp;lsquo;date&amp;rsquo; command had to say on my server, and low and behold it was set to an obscure timezone that is really of no use to me.</description>
+    </item>
+    
+  </channel>
+</rss>

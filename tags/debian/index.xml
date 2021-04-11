@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debian on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/debian/</link>
+    <description>Recent content in Debian on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Sep 2018 02:11:11 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Allowing only CloudFlare traffic to web server</title>
+      <link>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</link>
+      <pubDate>Wed, 19 Sep 2018 02:11:11 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</guid>
+      <description>The other day I had a somewhat panicked client come to me, worried by threats of DDoS attacks by some rogue user. In order to reduce the attack vector in case said bad actor made good on their threats, I thought it might not be a terrible idea to disallow all HTTP(S) traffic that doesn&amp;rsquo;t come from CloudFlare. The client already utilises them for caching and load balancing, and their website claims that they are there to help in such situations.</description>
+    </item>
+    
+    <item>
+      <title>Compressing PNG Images from the Command Line</title>
+      <link>https://jarrod.linahan.id.au/blog/compressing-png-images-from-command-line/</link>
+      <pubDate>Tue, 04 Sep 2018 02:14:12 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/compressing-png-images-from-command-line/</guid>
+      <description>I&amp;rsquo;ve done gone and rebuilt this website once again.
+See those little &amp;lsquo;me&amp;rsquo;s at the top of each page? They are were the biggest files being loaded across the wire when you visit a page on this website. For the sake of saving bits and bytes, I figured I&amp;rsquo;d shrink the images dimensions down from their original size to the size you see them now (80 pixels2 × 2).
+Starting out with a bunch of files that were 398 pixels2 , and after a quick bit of Google-foo, I discovered that my mac had a secret tool on it called sips - The scriptable image processing system</description>
+    </item>
+    
+    <item>
+      <title>File Syncronisation with Unison</title>
+      <link>https://jarrod.linahan.id.au/blog/file-syncronisation-with-unison/</link>
+      <pubDate>Mon, 03 Sep 2018 17:05:05 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/file-syncronisation-with-unison/</guid>
+      <description>What was supposed to be a quick-and-dirty on 2-way file synchronisation for Debian servers using Unison.
+   Pros Cons     2-way synchronisation May need to build it from source code   Exists in Debian repositories Not under &amp;lsquo;active&amp;rsquo; development   Runs under Unix/Windows/OSX More than 2 nodes Star topology recommended (ie, single point of failure)    Homepage: https://www.cis.upenn.edu/~bcpierce/unison/
+GitHub: https://github.com/bcpierce00/unison
+Manual: https://www.</description>
+    </item>
+    
+  </channel>
+</rss>

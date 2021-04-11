@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cPanel on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/cpanel/</link>
+    <description>Recent content in cPanel on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Jun 2018 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/cpanel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Grep in cPanel or Shared Hosting Environment</title>
+      <link>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</link>
+      <pubDate>Thu, 28 Jun 2018 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</guid>
+      <description>Being a command-line geek myself, it can be a massive pain in the ass not having SSH access to a client&amp;rsquo;s hosting service. Simple things like finding where a previous developer has declared some variable or template code can become what feels like a never-ending nightmare.
+Never mind dear, PHP to the rescue…
+&amp;lt;?php header(&amp;#34;Content-Type: text/plain&amp;#34;); // Replace $search with what you&amp;#39;re looking for // You could always make it a $_GET param.</description>
+    </item>
+    
+  </channel>
+</rss>

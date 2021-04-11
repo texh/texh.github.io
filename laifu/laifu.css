@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+  -webkit-touch-callout: none; /* iOS Safari */
+  user-select: none;
+}
+html { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; }
+body {
+  display: flex;
+  height: 100%;
+  background: #000;
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', monospace;
+}
+
+#app {
+  margin: auto;
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  flex-direction: column;
+}
+
+.info {
+  background: black;
+  border-bottom: solid 1px #aaa;
+  font-size: 12px;
+  line-height: 30px;
+  padding: 5px 10px;
+  color: #fff;
+
+  display: flex;
+  /* text-shadow: 1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black; */
+}
+
+.info div {
+  margin-left: auto;
+  display: none;
+}
+
+#canvas {
+  flex-grow: 1;
+}

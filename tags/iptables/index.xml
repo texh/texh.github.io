@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>iptables on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/iptables/</link>
+    <description>Recent content in iptables on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Sep 2018 02:11:11 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Allowing only CloudFlare traffic to web server</title>
+      <link>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</link>
+      <pubDate>Wed, 19 Sep 2018 02:11:11 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</guid>
+      <description>The other day I had a somewhat panicked client come to me, worried by threats of DDoS attacks by some rogue user. In order to reduce the attack vector in case said bad actor made good on their threats, I thought it might not be a terrible idea to disallow all HTTP(S) traffic that doesn&amp;rsquo;t come from CloudFlare. The client already utilises them for caching and load balancing, and their website claims that they are there to help in such situations.</description>
+    </item>
+    
+  </channel>
+</rss>

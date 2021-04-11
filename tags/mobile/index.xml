@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mobile on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/mobile/</link>
+    <description>Recent content in mobile on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Nov 2012 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/mobile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>McDonald&#39;s Australia Mobile App</title>
+      <link>https://jarrod.linahan.id.au/blog/mcdonalds-australia-mobile-app/</link>
+      <pubDate>Fri, 02 Nov 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/mcdonalds-australia-mobile-app/</guid>
+      <description>It&amp;rsquo;s official(ly unofficial)! I just released the first, and quite soon after the second, version of McRosters. This simple little app allows McDonald&amp;rsquo;s staff to easily access their rosters on Android devices, and also has a few other handy little features built in as well.
+Now noone has any excuse to be late, as you can have your phone automatically set shift reminders and add them to your devices calendar or any linked Google Calendar accounts.</description>
+    </item>
+    
+    <item>
+      <title>Access your Android contacts from your PC</title>
+      <link>https://jarrod.linahan.id.au/blog/access-your-android-contacts-from-your-pc/</link>
+      <pubDate>Sun, 12 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/access-your-android-contacts-from-your-pc/</guid>
+      <description>The other day my phones battery went flat just as I was about to call a friend I had planned to meet up with. Much to my dismay, I only have said friends number stored on my phone (currently running Android ICS 4.0.4), however I had access to a landline phone and a PC connected to the world wide web.
+To cut a long story short, if you have your Android device and contacts synced to your Google account, if you head on over to http://google.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hardwarehacking on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/hardwarehacking/</link>
+    <description>Recent content in hardwarehacking on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Nov 2014 16:14:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/hardwarehacking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Recipe of the week: Freshly baked MacBook Pro</title>
+      <link>https://jarrod.linahan.id.au/blog/freshly-baked-macbook-pro/</link>
+      <pubDate>Sun, 23 Nov 2014 16:14:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/freshly-baked-macbook-pro/</guid>
+      <description>A panicked friend came to me yesterday with a broken 15″ MacBook Pro (Early 2008).
+I sat the thing down on my desk and hit the power button. The hard drive &amp;amp; disk drive made a bit of noise, the power light glowed faintly then CLUNK and it was off again. No glowing Apple, no hope of booting to Recovery Mode.
+He repeatedly mentioned that it &amp;ldquo;must be a hard disk issue&amp;rdquo; so I swiftly replaced it, in the back of my mind knowing it was unlikely to fix anything.</description>
+    </item>
+    
+  </channel>
+</rss>

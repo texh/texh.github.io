@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Grep in cPanel or Shared Hosting Environment | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/detective.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Grep in cPanel or Shared Hosting Environment</h1>
+<div class="meta">
+  
+  
+  <time datetime="2018-06-28">June 28, 2018</time>
+</div>
+
+<p>Being a command-line geek myself, it can be a massive pain in the ass not having SSH access to a client&rsquo;s hosting service. Simple things like finding where a previous developer has declared some variable or template code can become what feels like a never-ending nightmare.</p>
+<p>Never mind dear, PHP to the rescue…</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Content-Type: text/plain&#34;</span>);
+
+<span style="color:#75715e">// Replace $search with what you&#39;re looking for
+</span><span style="color:#75715e">// You could always make it a $_GET param. Yeah, that would be safe enough 😉
+</span><span style="color:#75715e"></span>$search <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;some string to search for&#34;</span>;
+$command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;grep -ri &#39;</span><span style="color:#e6db74">$search</span><span style="color:#e6db74">&#39; ./*&#34;</span>;
+$output <span style="color:#f92672">=</span> <span style="color:#a6e22e">shell_exec</span>($command);
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$output\n\n</span><span style="color:#e6db74">&#34;</span>;
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Done.&#34;</span>;
+</code></pre></div><p>Keep in mind this code is basically just calling out to the command line, and that no <a href="https://www.php.net/manual/en/function.escapeshellcmd.php">filtering on that $search variable</a> is performed here. Also, knowing my luck, I’ll find a host that has disabled access to shell_exec before too long.</p>
+<p>Be careful out there 😉</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/php">#PHP</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/cpanel">#cPanel</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/server">#server</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/the-jabberwock/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/file-syncronisation-with-unison/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

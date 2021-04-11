@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Node.js vs Java Play! Framework | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/jump-rope.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Node.js vs Java Play! Framework</h1>
+<div class="meta">
+  
+  
+  <time datetime="2014-04-03">April 3, 2014</time>
+</div>
+
+<p>After having somewhat of a heated Facebook conversation with a friend about the Ups and Downs of various web frameworks, I was inspired to benchmark a simple &ldquo;Hello World&rdquo; to compare the speed and resource usage of <a href="http://nodejs.org/" title="node.js">Node.js</a> and the <a href="http://www.playframework.com/" title="Play Framework - Build Modern &amp; Scalable Web Apps with Java and Scala">Play! Framework</a> (using Java).</p>
+<p>Being mostly Perl guys ourselves, my go-to tool for web wizardry is generally the awesome <a href="http://www.catalystframework.org/" title="Catalyst | Perl MVC web application framework">Catalyst MVC framework</a>, can&rsquo;t say the same about my friend.</p>
+<p>All the tests below were completed on my Laptop – Intel Core i5 M480 CPU  @ 2.67GHz (2 cores, 4 threads) with 8 GB RAM running Ubuntu 13.10.</p>
+<p>I&rsquo;m comparing node.js v0.10.15, Play 2.2.1 built with Scala 2.10.2 (running Java 1.7.0_51) and using <a href="http://httpd.apache.org/docs/2.2/programs/ab.html" title="ab - Apache HTTP server benchmarking tool">ApacheBench</a> 2.3 in the following benchmarks, monitoring system resource usage using <a href="http://dag.wieers.com/home-made/dstat/" title="Dstat: Versatile resource statistics tool">Dstat</a> 0.7.2.</p>
+<p>I know it&rsquo;s not a very exhaustive set of benchmark tests, but the ApacheBench command I ran made 100,000 requests with a concurrency of 1,000.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~$ ab -r -n <span style="color:#ae81ff">100000</span> -c <span style="color:#ae81ff">1000</span> &lt;url&gt;
+</code></pre></div><!-- raw HTML omitted -->
+<h3 id="the-play-framework">The Play! Framework</h3>
+<p>After creating the basic application template made by running</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~$ play new hello
+</code></pre></div><p>I simply changed the <em>app/controllers/Application.java</em> to contain the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> controllers<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> play.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> play.mvc.*<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> views.html.*<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Application</span> <span style="color:#66d9ef">extends</span> Controller <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Result <span style="color:#a6e22e">index</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> ok<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="and-the-results">And the results?</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Concurrency Level:      1000
+Time taken for tests:   8.764 seconds
+Complete requests:      100000
+Failed requests:        0
+Write errors:           0
+Total transferred:      9100000 bytes
+HTML transferred:       1100000 bytes
+Requests per second:    11410.73 [#/sec] (mean)
+Time per request:       87.637 [ms] (mean)
+Time per request:       0.088 [ms] (mean, across all concurrent requests)
+Transfer rate:          1014.04 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   72 314.7      0    7016
+Processing:     0    9  23.5      5     883
+Waiting:        0    9  23.3      5     882
+Total:          0   81 322.1      6    7039
+
+Percentage of the requests served within a certain time (ms)
+  50%      6
+  66%      8
+  75%     10
+  80%     11
+  90%     23
+  95%   1004
+  98%   1011
+  99%   1025
+ 100%   7039 (longest request)
+</code></pre></div><p>Not too shabby if you ask me.</p>
+<p>11,410.73 requests per second, and 8.764 seconds to complete the test.</p>
+<h3 id="so-obviously-nodejs-can-do-better-right">So obviously node.js can do better, right?</h3>
+<p>This one was much simpler to get up and runnning. My hello.js is as follows:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sys</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;sys&#39;</span>),
+<span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+
+<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) {
+  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">writeHead</span>(<span style="color:#ae81ff">200</span>, {<span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/html&#39;</span>});
+  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">write</span>(<span style="color:#e6db74">&#39;Hello World&#39;</span>);
+  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">end</span>();
+}).<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">8080</span>);
+</code></pre></div><h3 id="show-me-the-money">Show me the money!</h3>
+<p>Uh oh, this isn&rsquo;t quite what we&rsquo;d both hoped for from the fabled node.js&hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Concurrency Level:      1000
+Time taken for tests:   17.967 seconds
+Complete requests:      100000
+Failed requests:        0
+Write errors:           0
+Total transferred:      11100000 bytes
+HTML transferred:       1100000 bytes
+Requests per second:    5565.76 [#/sec] (mean)
+Time per request:       179.670 [ms] (mean)
+Time per request:       0.180 [ms] (mean, across all concurrent requests)
+Transfer rate:          603.32 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0  124 809.2      0   15036
+Processing:    14   44  34.8     45    1782
+Waiting:       12   44  34.8     45    1782
+Total:         19  168 816.8     45   15299
+
+Percentage of the requests served within a certain time (ms)
+  50%     45
+  66%     47
+  75%     51
+  80%     53
+  90%     59
+  95%   1044
+  98%   1059
+  99%   3050
+ 100%  15299 (longest request)
+</code></pre></div><p>So node.js handled 5,565.76 requests a second, and took a whopping (comparatively speaking) 17.967 seconds to complete the benchmark. Like I said, not the stunning, life-changing, backend-rewrite-worthy results we&rsquo;d been hoping for.</p>
+<p>Then came the brain-fart moment.</p>
+<p>Node.js was only using one core whereas <a href="http://www.playframework.com/documentation/2.2.x/ThreadPools" title="ThreadPools | Play! Framework">according to this bit of the Play! Framework documentation</a> <em>&quot;[The default Play configuration] instructs Akka to create one thread per available processor, with a maximum of 24 threads in the pool.&quot;</em></p>
+<p>Well, that&rsquo;s hardly a fair test, is it?</p>
+<h3 id="now-for-the-real-test--cmon-node">Now for the real test – C&rsquo;mon node!</h3>
+<p>After a few tweaks to the original node script, and after reading about <a href="http://nodejs.org/api/cluster.html#cluster_cluster" title="Cluster - Take advantage of multi-core systems with node.js">the Cluster module</a>, I was left with the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cluster</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;cluster&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">numCPUs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;os&#39;</span>).<span style="color:#a6e22e">cpus</span>().<span style="color:#a6e22e">length</span>;
+
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">cluster</span>.<span style="color:#a6e22e">isMaster</span>) {
+  <span style="color:#75715e">// Fork workers.
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">numCPUs</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+    <span style="color:#a6e22e">cluster</span>.<span style="color:#a6e22e">fork</span>();
+  }
+
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Created &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">numCPUs</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; processes&#39;</span>);
+
+  <span style="color:#a6e22e">cluster</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;exit&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">worker</span>, <span style="color:#a6e22e">code</span>, <span style="color:#a6e22e">signal</span>) {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;worker &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">worker</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">pid</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; died&#39;</span>);
+  });
+} <span style="color:#66d9ef">else</span> {
+  <span style="color:#75715e">// Workers can share any TCP connection
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// In this case its a HTTP server
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) {
+      <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">writeHead</span>(<span style="color:#ae81ff">200</span>, {<span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/html&#39;</span>});
+      <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">write</span>(<span style="color:#e6db74">&#39;Hello World&#39;</span>);
+      <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">end</span>();
+  }).<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">8080</span>);
+}
+</code></pre></div><p>Surely now node.js can live up to those expectations of ours, right?</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Concurrency Level:      1000
+Time taken for tests:   9.502 seconds
+Complete requests:      100000
+Failed requests:        0
+Write errors:           0
+Total transferred:      11100000 bytes
+HTML transferred:       1100000 bytes
+Requests per second:    10524.19 [#/sec] (mean)
+Time per request:       95.019 [ms] (mean)
+Time per request:       0.095 [ms] (mean, across all concurrent requests)
+Transfer rate:          1140.81 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   48 234.2      1    3011
+Processing:     0   45  32.6     37     548
+Waiting:        0   43  32.6     36     548
+Total:          0   92 241.8     42    3302
+
+Percentage of the requests served within a certain time (ms)
+  50%     42
+  66%     55
+  75%     65
+  80%     71
+  90%     96
+  95%    139
+  98%   1059
+  99%   1092
+ 100%   3302 (longest request)
+</code></pre></div><p>Wahoo! This time it only took node 9.502 seconds to get through all of those requests, and it managed to handle a fairly decent 10524.19/second.</p>
+<p>Still a teeny bit shy of the ever-impressive Play! Framework, but now lets take a look at the system load all this testing generated.</p>
+<h3 id="theyre-both-quick-but-how-about-their-system-resource-usage">They&rsquo;re both quick, but how about their system resource usage?</h3>
+<p>The first graph here shows CPU usage throughout the testing. The Play test came first, followed by the basic node.js test and lastly the clustered node.js server test.</p>
+<p><img src="./node_vs_play_cpu.png" alt="CPU Usage - Node.js vs Java Play! Framework"></p>
+<p>Hold up a second – looks like I ran 6 tests, doesn&rsquo;t it?</p>
+<p>Ok, so I did. Play! had to compile the application the first time I ran it, so I chose to run three tests twice, and then share the results from the best scoring test. IMHO it seemed fair enough at the time, if you don&rsquo;t feel that way let me know and I&rsquo;m happy to run them again.</p>
+<p>As you can see, and somewhat surprisingly, it appears that once the Java has been compiled the CPU usage is much the same as the clustered node.js example.</p>
+<p><img src="./node_vs_play_ram.png" alt="RAM Usage - Node.js vs Java Play! Framework"></p>
+<p>In the same fashion as the first chart, this is the Play Framework test followed by the basic node.js example and finally the clustered node.js server. As you can see, and this time not so surprisingly Java gobbles up as much RAM as it can which node.js gets the task done with minimal extra usage.</p>
+<h2 id="so-the-final-verdict">So the final verdict?</h2>
+<p>If memory usage is of great concern to you, it would seem that node.js is the way to go. If not, and you do perhaps prefer Java development, then Play may be the way to go (though from what I&rsquo;ve seen so far the documentation <em>isn&rsquo;t</em> what it could be.</p>
+<p>If you like being given the a basic MVC <a href="http://boards.straightdope.com/sdmb/showthread.php?t=452765" title="Just click this one...">architechted</a> application framework with which to build your application, then there&rsquo;s another brownie point for Play. If <!-- raw HTML omitted -->RYO<!-- raw HTML omitted --> is more your style, then perhaps node.js is for you.</p>
+<h3 id="and-before-you-go-and-hate-on-me">And before you go and hate on me&hellip;</h3>
+<p>I know that this is hardly a real-world use case. With most applications there are at least some elements of database operations, caching, front-end proxies (whether these be via varnish/nginx/noSQL stores/a CDN or other means), as well as much more complex logic and other moving parts.</p>
+<p>However, as a simple test of the minimum overhead of these two tools, and a way to see the bog-standard amount of requests you should be able to push out of them I feel this is fairly fitting.</p>
+<p>Also, if you look at this as somewhat of a guide as to how easy it is to get set up with node.js or Play, you&rsquo;ll notice that Play comes with a fairly well tried and tested MVC feel about it, and gives a bit more of a predefined structure to your application – granted you may or may not want this.</p>
+<p>And one last thing before I go: yes, this was heavily inspired by <a href="http://zgadzaj.com/benchmarking-nodejs-basic-performance-tests-against-apache-php" title="Benchmarking Node.js - basic performance tests against Apache + PHP">Maciej Zgadzaj&rsquo;s post here</a>.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/nodejs">#nodejs</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/javascript">#javascript</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/java">#java</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/vs">#vs</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/node-js-vs-java-play-framework/
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/finally-bit-the-bullet/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/freshly-baked-macbook-pro/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

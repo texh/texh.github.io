@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>LNPPCF vs. LAMP | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/punchingbag.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>LNPPCF vs. LAMP</h1>
+<div class="meta">
+  
+  
+  <time datetime="2013-04-16">April 16, 2013</time>
+</div>
+
+<p>Every day it seems that someone is writing introductions and reviews about how awesome using the so-coined LAMP (Linux, Apache, MySQL &amp; PHP) stack is.  I too was once a lover of this choice of software for getting things online, however over the past few years I’ve slowly replaced most of those with other free alternatives and haven’t looked back for a moment. This website, along with most others that I look after nowadays, are running what I guess you could call a LNPPCF stack. That is Linux, Nginx, PostgreSQL and Perl with Catalyst and FastCGI.</p>
+<p>My reasoning behind this? Well, for all intents and purposes Postgres seems to be very much alive in terms of regular releases and the fact that it has a huge following and ample resources online for learning and working with it. The official docs are also second to none, but should you still be having trouble getting your head around why your queries are running slowly, or not at all, there’s always the #postgres channel on FreeNode where people are generally more than willing to share their expertise and opinions (and in the traditional IRC manner, flame your ass if you’re being an ubern00b).</p>
+<p>Postgres also doesn’t allow you to do Stupid Shit™. A friend and I were having trouble with data in a MySQL database of ours disappearing or being truncated for no obvious reason.  The culprit was a VARCHAR column with a length set. MySQL was simply truncating anything we tried to store in this column, and then going on it’s merry way.  Postgres in the same situation essentially blows up with a (somewhat helpful) error message, and doesn’t commit the transaction to the database. IMHO, this is a much better thing to happen – I don’t want to assume all my data is stored in full and safe, only to find that half of it has been thrown away by my DBMS. It can also point out flaws in table definitions, the database structure or in the code interfacing with the DB.</p>
+<p>As for my choice of Nginx over Apache it’s fairly simple. It’s powerful, fast, light and modular. The config files are laid out in a more sane format (perhaps its the fact that they mostly resemble a big Perl-ish datastructure), the docs are extremely helpful and most if not all things that Apache is capable of are achievable with relative ease, perhaps more.</p>
+<p>My choice of Perl over PHP was honestly the biggest hurdle to overcome. It’s sometimes cryptic syntax took a while to come to terms with, but again Perl has an amazing community lurking behind it, and for a beginner it shouldn’t be too hard to get up and running with a little practice and some guidance and support from the veterans that are out there. I think the biggest benefit of Perl is the CPAN. It’s a goldmine of code which you can take advantage of. With a big push towards code reuse, and not rebuilding the wheel for each menial task you have to deal with in your daily programming adventures, there’s bound to be something on the CPAN to help you out. Another great thing is when you need to achieve task X, but aren’t quite sure of the intricacies that would be required to implement a solid solution. If you’re lucky you’ll be able to find a module that has been developed, tried and tested by the community (which may or may not have very great documentation – YMMV there) which you can use to help out along the way. CPAN puts PHP’s Pear to shame.</p>
+<p>There is also an ever-growing amount of awesome web frameworks out there for Perl. Catalyst, Mojolicious, Dancer – the list goes on, as do the reasons why you would choose one over the other. Personal preference tends for me to use Catalyst for most projects, however I’ve dabbled with some of the others (namely Mojolicious) for smaller projects.</p>
+<p>Then comes FastCGI which basically ties my Perl projects nicely into Nginx, and gets everything up and running online. Most of the Perl web frameworks out there come with some form of inbuilt testing and development server, but so far FastCGI seems to be the best route to go down in terms of actual production-ready serving of “stuff”.</p>
+<p>All in all, it really comes down to personal preference and what languages and technology you’re most comfortable and familiar with. But given the choice, why not explore something a little left-of-center for your next project? You may be pleasantly surprised by what you can achieve.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/server">#server</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/linux">#linux</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/nginx">#nginx</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/vs">#vs</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/lnppcf-vs-lamp
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/convert-bytes-to-readable-units-in-perl/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/finally-bit-the-bullet/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

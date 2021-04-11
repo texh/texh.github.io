@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/linux/</link>
+    <description>Recent content in linux on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Mar 2021 23:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How probably not to secure SSH</title>
+      <link>https://jarrod.linahan.id.au/blog/how-probably-not-to-secure-ssh/</link>
+      <pubDate>Fri, 05 Mar 2021 23:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/how-probably-not-to-secure-ssh/</guid>
+      <description>A past me apparently thought this was a good idea.
+I think it was a minor modification on inherited shitshow.
+This is only here for reference. Probably don&amp;rsquo;t try it at home.
+It assumes you already have some kind of dynamic IP/DDNS thing set up.
+Git history puts this around 8 years ago
+ You should probably read this page instead.
+ Dynamic host SSH access If your remote IP address changes between connections, the first attempt at reconnecting will fail and then spawn the below script to update allowed addresses.</description>
+    </item>
+    
+    <item>
+      <title>File Syncronisation with Unison</title>
+      <link>https://jarrod.linahan.id.au/blog/file-syncronisation-with-unison/</link>
+      <pubDate>Mon, 03 Sep 2018 17:05:05 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/file-syncronisation-with-unison/</guid>
+      <description>What was supposed to be a quick-and-dirty on 2-way file synchronisation for Debian servers using Unison.
+   Pros Cons     2-way synchronisation May need to build it from source code   Exists in Debian repositories Not under &amp;lsquo;active&amp;rsquo; development   Runs under Unix/Windows/OSX More than 2 nodes Star topology recommended (ie, single point of failure)    Homepage: https://www.cis.upenn.edu/~bcpierce/unison/
+GitHub: https://github.com/bcpierce00/unison
+Manual: https://www.</description>
+    </item>
+    
+    <item>
+      <title>IPv4 Subnet Mask Cheat Sheet</title>
+      <link>https://jarrod.linahan.id.au/blog/ipv4-subnet-mask-cheat-sheet/</link>
+      <pubDate>Wed, 13 Dec 2017 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/ipv4-subnet-mask-cheat-sheet/</guid>
+      <description>A quick overview “cheat sheet” of IPv4 Subnet masks.. This comes in surprisingly handy more often than I first imagined it would.
+    Addresses Hosts Netmask Amount of a Class Class     /30 4 2 255.255.255.252 1/64 C   /29 8 6 255.255.255.248 1/32 C   /28 16 14 255.255.255.240 1/16 C   /27 32 30 255.255.255.224 1/8 C   /26 64 62 255.</description>
+    </item>
+    
+    <item>
+      <title>LNPPCF vs. LAMP</title>
+      <link>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</link>
+      <pubDate>Tue, 16 Apr 2013 01:03:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</guid>
+      <description>Every day it seems that someone is writing introductions and reviews about how awesome using the so-coined LAMP (Linux, Apache, MySQL &amp;amp; PHP) stack is. I too was once a lover of this choice of software for getting things online, however over the past few years I’ve slowly replaced most of those with other free alternatives and haven’t looked back for a moment. This website, along with most others that I look after nowadays, are running what I guess you could call a LNPPCF stack.</description>
+    </item>
+    
+    <item>
+      <title>A Shiny New Pie - Raspberry Pi, that is</title>
+      <link>https://jarrod.linahan.id.au/blog/a-shiny-new-pie-raspberry-pi-that-is/</link>
+      <pubDate>Thu, 20 Sep 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/a-shiny-new-pie-raspberry-pi-that-is/</guid>
+      <description>So although I may have missed the boat a bit, I finally got around to ordering myself a Raspberry Pi (model B) from element13.. Two days later, and it arrived at my front door - wrapped up snugly in a whole bunch of bubble wrap waiting for me to start tinkering.
+So far I&amp;rsquo;ve managed to get a fairly functional XBMC/raspbmc set-up going, however I still need to find a powered USB hub to get my old portable hard drive to work with the raspberry pi.</description>
+    </item>
+    
+    <item>
+      <title>Getting up and running with Nginx [CentOS]</title>
+      <link>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</guid>
+      <description>While I&amp;rsquo;m on the topic of upgrading and installing server software, why not go quickly into how I get nginx set up on my centOS boxes.
+It&amp;rsquo;s a super simple process as there&amp;rsquo;s an official RHEL/centOS nginx yum repository.
+Basically, given a new server I would remove apache/httpd with
+yum remove httpd Then create a file named /etc/yum.repos.d/nginx.repo and paste the configuration below within it:
+[nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/$releasever/$basearch/ gpgcheck=0 enabled=1 Then it&amp;rsquo;s a simply matter of running</description>
+    </item>
+    
+    <item>
+      <title>Installing Perl from source</title>
+      <link>https://jarrod.linahan.id.au/blog/installing-perl-from-source/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/installing-perl-from-source/</guid>
+      <description>So I&amp;rsquo;ve done this a few times now, and every time I go to Google to find the same article just to make sure that I follow similar, if not the same, steps.
+You may be thinking &amp;ldquo;Ch&amp;rsquo;yeah, it&amp;rsquo;s just a simple configure, make, make install&amp;rdquo;, or a quick poke on the Yum stick, but maybe not. It is a good idea to keep &amp;lsquo;The Old Perl&amp;rsquo; (generally 5.8.8 as I&amp;rsquo;m a centOS sucker) as removing it via yum would remove a whole bunch of other things that rely on it.</description>
+    </item>
+    
+    <item>
+      <title>Change centOS local timezone</title>
+      <link>https://jarrod.linahan.id.au/blog/change-centos-local-timezone/</link>
+      <pubDate>Sat, 04 Aug 2012 18:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/change-centos-local-timezone/</guid>
+      <description>So today I was taking a look at those lovely lovely photos that I brought over to the blog from instagram, and rearranging some other bits and pieces, when I realised that the timestamps on said images were well off what times I remembered actually taking the photos..
+So I took a look at what the &amp;lsquo;date&amp;rsquo; command had to say on my server, and low and behold it was set to an obscure timezone that is really of no use to me.</description>
+    </item>
+    
+  </channel>
+</rss>

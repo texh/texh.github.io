@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nginx on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/nginx/</link>
+    <description>Recent content in nginx on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Apr 2013 01:03:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LNPPCF vs. LAMP</title>
+      <link>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</link>
+      <pubDate>Tue, 16 Apr 2013 01:03:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</guid>
+      <description>Every day it seems that someone is writing introductions and reviews about how awesome using the so-coined LAMP (Linux, Apache, MySQL &amp;amp; PHP) stack is. I too was once a lover of this choice of software for getting things online, however over the past few years I’ve slowly replaced most of those with other free alternatives and haven’t looked back for a moment. This website, along with most others that I look after nowadays, are running what I guess you could call a LNPPCF stack.</description>
+    </item>
+    
+    <item>
+      <title>Getting up and running with Nginx [CentOS]</title>
+      <link>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</guid>
+      <description>While I&amp;rsquo;m on the topic of upgrading and installing server software, why not go quickly into how I get nginx set up on my centOS boxes.
+It&amp;rsquo;s a super simple process as there&amp;rsquo;s an official RHEL/centOS nginx yum repository.
+Basically, given a new server I would remove apache/httpd with
+yum remove httpd Then create a file named /etc/yum.repos.d/nginx.repo and paste the configuration below within it:
+[nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/$releasever/$basearch/ gpgcheck=0 enabled=1 Then it&amp;rsquo;s a simply matter of running</description>
+    </item>
+    
+  </channel>
+</rss>

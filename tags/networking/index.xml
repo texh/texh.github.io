@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>networking on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/networking/</link>
+    <description>Recent content in networking on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Dec 2017 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/networking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IPv4 Subnet Mask Cheat Sheet</title>
+      <link>https://jarrod.linahan.id.au/blog/ipv4-subnet-mask-cheat-sheet/</link>
+      <pubDate>Wed, 13 Dec 2017 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/ipv4-subnet-mask-cheat-sheet/</guid>
+      <description>A quick overview “cheat sheet” of IPv4 Subnet masks.. This comes in surprisingly handy more often than I first imagined it would.
+    Addresses Hosts Netmask Amount of a Class Class     /30 4 2 255.255.255.252 1/64 C   /29 8 6 255.255.255.248 1/32 C   /28 16 14 255.255.255.240 1/16 C   /27 32 30 255.255.255.224 1/8 C   /26 64 62 255.</description>
+    </item>
+    
+  </channel>
+</rss>

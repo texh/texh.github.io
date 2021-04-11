@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nodejs on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/nodejs/</link>
+    <description>Recent content in nodejs on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Sep 2018 04:22:46 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/nodejs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using Pug templates with Sails.js</title>
+      <link>https://jarrod.linahan.id.au/blog/using-pug-templates-with-sailsjs/</link>
+      <pubDate>Sun, 09 Sep 2018 04:22:46 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/using-pug-templates-with-sailsjs/</guid>
+      <description>For a while now I&amp;rsquo;ve been hacking on a few Sails.js based projects, my long-running pet project ZHDict being one of them.
+After hacking on some Hexo themes, the first of which (which you&amp;rsquo;re currently looking at) uses Pug templating (the template engine formerly known as Jade) behind the scenes to render the HTML, and I&amp;rsquo;ve kinda grown to like it. You can think of pug as the love-child creation of Python and HTML after a steamy night of flipping bits.</description>
+    </item>
+    
+    <item>
+      <title>Node.js vs Java Play! Framework</title>
+      <link>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</link>
+      <pubDate>Thu, 03 Apr 2014 00:24:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</guid>
+      <description>After having somewhat of a heated Facebook conversation with a friend about the Ups and Downs of various web frameworks, I was inspired to benchmark a simple &amp;ldquo;Hello World&amp;rdquo; to compare the speed and resource usage of Node.js and the Play! Framework (using Java).
+Being mostly Perl guys ourselves, my go-to tool for web wizardry is generally the awesome Catalyst MVC framework, can&amp;rsquo;t say the same about my friend.
+All the tests below were completed on my Laptop – Intel Core i5 M480 CPU @ 2.</description>
+    </item>
+    
+  </channel>
+</rss>

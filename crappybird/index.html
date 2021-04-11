@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv=X-UA-Compatible content="IE=edge" />
+  <meta name=viewport content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Crappy Bird</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style type="text/css">
+    * { box-sizing: border-box; }
+    html { height: 100%; margin: 0; padding: 0; }
+    body {
+      display: flex;
+      height: 100%;
+      background: #eee;
+      margin: 0;
+      padding: 0;
+    }
+
+    #app {
+      margin: auto;
+      flex-grow: 1;
+      height: 100%;
+      background: green;
+    }
+
+    svg#crappybird {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+      width: 100%;
+      flex-shrink: 0;
+
+      /* border: solid 5px #000;
+      border-radius: 8px; */
+      /* background: skyblue; */
+      background: #000;
+    }
+
+    .debug {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 300px;
+      border: solid 3px #333;
+      background: #fff;
+      white-space: pre-wrap;
+      padding: 10px;
+      transform: scale(0.8);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .score {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: monospace;
+      font-size: 20px;
+      color: #fff;
+      text-shadow: 1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black;
+    }
+    </style>
+</head>
+
+<body>
+<div id="app">
+  <div v-if="debug" class="debug">{{ { bird, gap, speed } }}</div>
+  <div class="score">{{ score }}</div>
+  <svg v-if="bird" id="crappybird" :viewBox="`0 0 ${screen.width} ${screen.height}`" xmlns="http://www.w3.org/2000/svg"
+    @keydown="onUserInteraction"
+    @mousedown.prevent.stop="onUserInteraction"
+    @touchstart.prevent.stop="onUserInteraction"
+    >
+    <template v-for="p in pipes">
+      <rect :x="p.x" :y="p.y0" :width="p.w" :height="p.h0" :rx="p.radius" fill="#fff" />
+      <rect :x="p.x" :y="p.y1" :width="p.w" :height="p.h1" :rx="p.radius" fill="#fff" />
+    </template>
+
+    <template v-if="debug" v-for="i in Math.floor(screen.height / 10)">
+      <line x1="0" :y1="i * 10" :x2="screen.width" :y2="i * 10" style="stroke:rgba(255,255,255,0.5);stroke-width:1" />
+      <line :x1="i * 10" y1="0" :x2="i * 10" :y2="screen.height" style="stroke:rgba(255,255,255,0.5);stroke-width:1" />
+    </template>
+
+    <circle ref="protagonist" :cx="bird.x" :cy="bird.y" :r="bird.r" :fill="state === 'playing' ? '#fff' : 'red'" />
+  </svg>
+</div>
+
+<script type="text/javascript">
+;(function(){
+  var height = 500
+  var width = 500
+  const MAX_SPEED = 7
+
+  new Vue({
+    el: "#app",
+    data: {
+      highscore: 0,
+      debug: false,
+      raf: null,
+      state: 'playing',
+      screen: { height, width },
+      maxObstacles: 3,
+      score: 0,
+      speed: 2,
+      gap: 150,
+      bird: {
+        x: 50,
+        y: (height / 2) - 5,
+        r: 18,
+        gravity: 5,
+        velocity: 0
+      },
+      pipes: []
+    },
+
+    mounted () {
+      document.addEventListener('keydown', this.onUserInteraction)
+      window.addEventListener('resize', this.updateLayout)
+
+
+      const hs = localStorage.getItem('dd_hs')
+      if (hs) { this.highscore = parseInt(hs) }
+
+      this.updateLayout()
+      this.start()
+    },
+
+    beforeDestroy () {
+      document.removeEventListener('keydown', this.onUserInteraction)
+      window.removeEventListener('resize', this.updateLayout)
+      cancelAnimationframe(this.raf)
+    },
+
+    methods: {
+      start () {
+        console.clear()
+        this.gap = 50
+        this.score = 0
+        this.state = 'playing'
+        this.speed = 3
+        this.bird.y = (height / 2) - 5,
+        this.bird.gravity = 5
+        this.bird.velocity = 0
+        this.pipes = []
+
+
+        let left = 150
+        while (left < width) {
+          left += (Math.random() * (width - 100))
+          if (left < width) {
+            this.addPipe(left)
+            left += 100
+          }
+        }
+
+        this.raf = requestAnimationFrame(this.loop)
+      },
+
+      updateLayout () {
+        this.screen.height = height = window.innerHeight
+        this.screen.width = width = window.innerWidth
+        this.maxObstacles = ~~(this.screen.width / (60 + 100))
+      },
+
+      loop () {
+        this.birdLoop()
+        this.obstacleLoop()
+
+        if (this.state === 'playing') {
+          this.raf = requestAnimationFrame(this.loop)
+        }
+      },
+
+      obstacleLoop() {
+        const bird = this.bird
+        for (let i = this.pipes.length - 1; i >= 0; i--) {
+          const pipe = this.pipes[i]
+          pipe.x -= this.speed
+          if (pipe.x + pipe.w + 15 < 0) {
+            this.pipes.splice(i, 1)
+            continue
+          }
+
+          if (pipe.passed) { continue }
+
+          if (bird.left > pipe.x + pipe.w) {
+            this.score++
+            pipe.passed = true
+            if (this.gap > 100) {
+              this.gap -= 0.5
+            }
+            if (this.speed < MAX_SPEED) {
+              this.speed += 0.1
+            }
+            continue
+          }
+
+          if (this.checkCollision(pipe)) {
+            return this.dead()
+          }
+        }
+
+        if (this.pipes.length < this.maxObstacles && (Math.random() * 2)) {
+          const lp = this.pipes.length ? this.pipes[this.pipes.length - 1] : undefined
+          if (lp && lp.x + lp.w > width - 200) { return }
+          this.addPipe()
+        }
+      },
+
+      checkCollision (pipe) {
+        if (pipe.passed) { return false }
+        const { top, right, bottom, left } = this.bird
+        const brad = this.bird.radius
+
+        // Check if we're within the bounds of this set of pipes
+        if (right < pipe.x || left > pipe.x + pipe.w) {
+          return false
+        }
+
+        // IWMIH we're between the gap of 2 pipes
+        if (top < pipe.y0 + pipe.h0 - pipe.radius || bottom > pipe.y1 + pipe.radius) {
+          pipe.hit
+          return true
+        }
+
+        if (top <= pipe.y0 + pipe.h0) {
+          const pcircle = { radius: pipe.radius, x: pipe.x + pipe.radius, y: pipe.y0 + pipe.h0 - pipe.radius }
+          if (this.checkCircleCollision(pcircle)) {
+            pipe.hit = true
+            return true
+          }
+        }
+
+        if (bottom >= pipe.y1) {
+          const pcircle = { radius: pipe.radius, x: pipe.x + pipe.radius, y: pipe.y1 + pipe.radius }
+          if (this.checkCircleCollision(pcircle)) {
+            pipe.hit = true
+            return true
+          }
+        }
+      },
+
+      checkCircleCollision (circle1) {
+        const circle2 = {
+          x: this.bird.x,
+          y: this.bird.y,
+          radius: this.bird.r
+        }
+        var dx = circle1.x - circle2.x;
+        var dy = circle1.y - circle2.y;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < circle1.radius + circle2.radius) {
+          // collision detected!
+          return true
+        }
+        return false
+      },
+
+      addPipe (x) {
+        const pw = ~~(Math.random() * 60) + 60
+        const radius = pw / 2
+        const offset = pw
+        const gapSize = this.gap
+        const gapStart = ~~(Math.random() * (height - gapSize))
+        const h1 = height + 15
+
+        this.pipes.push({
+          w: pw,
+          x: x || width + pw,
+          radius,
+          y0: -offset,
+          h0: gapStart,
+          y1: gapStart + gapSize,
+          h1,
+          hit: false
+        })
+      },
+
+      birdLoop () {
+        this.bird.y += this.bird.gravity - this.bird.velocity
+        if (this.bird.y - this.bird.r <= 0) { this.bird.y = this.bird.r }
+
+        // Fell off
+        if (this.bird.y + this.bird.r >= height) {
+          this.bird.y = height - this.bird.r
+          this.bird.velocity = 0
+          return this.dead()
+        }
+
+        this.bird.velocity = Math.max(-10, this.bird.velocity - 0.8)
+
+        this.bird.left = this.bird.x - this.bird.r
+        this.bird.right = this.bird.x + this.bird.r
+        this.bird.top = this.bird.y - this.bird.r
+        this.bird.bottom = this.bird.y + this.bird.r
+      },
+
+      onUserInteraction (e) {
+        e.preventDefault()
+        if (this.state !== 'playing') {
+          this.start()
+        }
+
+        this.bird.gravity = 5
+        this.bird.velocity = this.bird.gravity * 3
+      },
+
+      dead () {
+        cancelAnimationFrame(this.raf)
+        this.state = 'dead'
+
+        if (this.score > this.highscore) {
+          localStorage.setItem('dd_hs', this.score)
+          this.highscore = this.score
+          alert(`EYYY, not bad! ${this.score} points is your highest yet`)
+        }
+      }
+    }
+  })
+}())
+</script>
+</body>
+</html>

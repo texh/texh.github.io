@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>arduino on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/arduino/</link>
+    <description>Recent content in arduino on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 07 Jun 2020 11:06:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/arduino/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Science Sunday: RGB LED Power Consumption Calculator</title>
+      <link>https://jarrod.linahan.id.au/blog/rgb-led-power-usage-calculator/</link>
+      <pubDate>Sun, 07 Jun 2020 11:06:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/rgb-led-power-usage-calculator/</guid>
+      <description>Before delving much-too-far down the rabbit hole of flashy, over-engineered lamp repairs and Arduino funtimes, I thought it advantageous to take an educated guess at the maximum power consumption of replacing some existing LEDs in a friends now-exploded lamp with WS2812 &amp;ldquo;NeoPixel Stick&amp;rdquo; clones.
+  Num. LEDs   {{ bgcolor }}   Red mA Green mA Blue mA Max mA      {{ out.rgbMa }}   Red % Green % Blue % Total Bright.</description>
+    </item>
+    
+  </channel>
+</rss>

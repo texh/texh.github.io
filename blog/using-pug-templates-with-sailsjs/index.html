@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Using Pug templates with Sails.js | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/pug_life.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Using Pug templates with Sails.js</h1>
+<div class="meta">
+  
+  
+  <time datetime="2018-09-09">September 9, 2018</time>
+</div>
+
+<p>For a while now I&rsquo;ve been hacking on a few <a href="https://sailsjs.com/">Sails.js</a> based projects, my long-running pet project <a href="https://zhdict.net/">ZHDict</a> being one of them.</p>
+<p>After hacking on some <a href="https://hexo.io/">Hexo</a> themes, the <a href="https://github.com/nahanil/hexo-theme-changjinglu">first of which</a> (<del>which you&rsquo;re currently looking at</del>) uses <a href="https://pugjs.org/">Pug templating</a> (the template engine formerly known as Jade) behind the scenes to render the HTML, and I&rsquo;ve kinda grown to like it. You can think of pug as the love-child creation of Python and HTML after a steamy night of flipping bits. IMHO it&rsquo;s much nicer than the default EJS templating that ships with Sails.</p>
+<p>All this got me thinking, what if I could combine the concise, pointy-bracket free pidgin that is Pug with the swishy node.js web framework that is Sails.js?</p>
+<p>For the record, the following is my experience with Sails v1.0.2.</p>
+<h2 id="first-things-first">First things first</h2>
+<p>Want to play along at home? Make sure you&rsquo;ve got <a href="https://nodejs.org/en/">node.js</a> installed, as well as the Sails CLI tools.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -g sails
+</code></pre></div><p><!-- raw HTML omitted -->You <em>might</em> need to but probably shouldn&rsquo;t but still can add a <em><strong>sudo</strong></em> to the start of that command in Linux/OSX land if it doesn&rsquo;t let you install it globally (that&rsquo;s what the <code>-g</code> bit&rsquo;s all about). I can&rsquo;t give you any suggestions if you&rsquo;re running Windows.<!-- raw HTML omitted --></p>
+<h2 id="getting-started-with-pug--sailsjs">Getting started with Pug &amp; Sails.js</h2>
+<p>To keep things simple, let&rsquo;s start off with a new Sails.js project by using the provided cli tools. The following command will create a new Sails project in a directory called &lsquo;puglife&rsquo;:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sails new puglife
+</code></pre></div><p>You should be met with the following options. For the sake of this example I&rsquo;m going with <strong>2. Empty</strong>, but the Web App starter is a pretty kick-ass starting point, albeit confusing in places and fairly opinionated.
+If you <em>do</em> start off with the &ldquo;Web App&rdquo; sails template, do note that all the bundled template files will be EJS and not pug <em><strong>// TODO: Insert sad pug face here</strong></em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt"> Choose a template for your new Sails app:
+ 1. Web App  ·  Extensible project with auth, login, &amp; password recovery
+ 2. Empty    ·  An empty Sails app, yours to configure
+ (type &#34;?&#34; for help, or &lt;CTRL+C&gt; to cancel)
+</code></pre></div><p>Now sit back and wait a bit while some dependencies are installed.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">info: Installing dependencies...
+Press CTRL+C to cancel.
+(to skip this step in the future, use --fast)
+info: Created a new Sails app `puglife`!
+</code></pre></div><p><!-- raw HTML omitted -->Hopefully the output in your terminal is more pretty and colourful than it is here<!-- raw HTML omitted -->
+Ok neato! Our fresh Sails.js project is set up and ready to go, so lets take a look, shall we?</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd puglife
+sails lift
+</code></pre></div><p>The <code>sails lift</code> command should start the devlopment server. If you are following along at home, run the above then check out <a href="http://localhost:1337/">http://localhost:1337</a> in your web browser. Zim zim zala bim, you should see your shiny new sails project in all it&rsquo;s glory.</p>
+<h2 id="pug-it-up">Pug it up</h2>
+<p>Ok, so this was supposed to be about using Pug templates and Sails.js, right? Right!
+Before we can make things pugtastic, we need to install a couple more dependencies. From your project folder, run</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install --save consolidate pug
+</code></pre></div><p>This will install, you guessed it, <a href="https://www.npmjs.com/package/consolidate">consolidate</a> and pug, as <em>kinda</em> recommended in the <a href="https://sailsjs.com/documentation/concepts/views/view-engines">Sails docs</a>.</p>
+<h3 id="configure-sails-and-pug-with-consolidate">Configure Sails and Pug with Consolidate</h3>
+<p>Now we&rsquo;ll need to tell Sails to use Pug instead of the default EJS templating engine. To do that, we&rsquo;re going to have to switch up the guts of the project&rsquo;s <code>config/views.js</code> file.
+For now, the config/views.js should only contain the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span>.<span style="color:#a6e22e">views</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">extension</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;pug&#39;</span>,
+  <span style="color:#a6e22e">getRenderFn</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#75715e">// Import `consolidate`.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">consolidate</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;consolidate&#39;</span>);
+    <span style="color:#75715e">// Return the rendering function for Swig.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">consolidate</span>.<span style="color:#a6e22e">pug</span>;
+  },
+
+  <span style="color:#a6e22e">layout</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+};
+</code></pre></div><p><!-- raw HTML omitted -->You can keep the default comments in there if you wish, I&rsquo;ve only ommitted them here as they&rsquo;re irellevant for our purposes.<!-- raw HTML omitted --></p>
+<p>The <strong>extension:</strong> tells Sails, I suppose, to look for files that end with &lsquo;.pug&rsquo;, and the <strong>getRenderFn:</strong> loads in consolidate and in turn pug to actually render our templates. As Sails can&rsquo;t load up our pug &ldquo;layouts&rdquo;, we&rsquo;ll also need to set <strong>layout</strong> to false.</p>
+<p>At this stage, if you re-run <strong>sails lift</strong> and open your site in a web browser, you&rsquo;ll be met with a bunch of gobbledygook about not being able to render your views:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Could not render view \&#34;pages/homepage\&#34;.  Tried locating view file @ \&#34;/Users/jarrod/workspace/puglife/views/pages/homepage\&#34;.&#34;</span>,
+  <span style="color:#f92672">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;E_VIEW_FAILED&#34;</span>,
+  <span style="color:#f92672">&#34;status&#34;</span>: <span style="color:#ae81ff">500</span>,
+  <span style="color:#f92672">&#34;view&#34;</span>: {
+    <span style="color:#f92672">&#34;defaultEngine&#34;</span>: <span style="color:#e6db74">&#34;pug&#34;</span>,
+    <span style="color:#f92672">&#34;ext&#34;</span>: <span style="color:#e6db74">&#34;.pug&#34;</span>,
+    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pages/homepage&#34;</span>,
+    <span style="color:#f92672">&#34;root&#34;</span>: <span style="color:#e6db74">&#34;/Users/jarrod/workspace/puglife/views&#34;</span>
+  }
+}
+</code></pre></div><p>This isn&rsquo;t a bad thing, it&rsquo;s <em><strong>progress</strong></em>! We&rsquo;re almost there guys, <a href="https://www.youtube.com/watch?v=52dQ1r7bLOI">jus' hang loose, blood</a>. She gonna catch ya up on da rebound on da med side..</p>
+<h3 id="creating-our-templates">Creating our templates</h3>
+<p>At the very least, we&rsquo;re going to need two pug templates to render our homepage.
+The first of which, <strong>views/layouts/layout.pug</strong>, is gonna contain all the HTML-ey, doc-typey, styles and script including stuff we need.</p>
+<pre><code class="language-pug" data-lang="pug">doctype html
+html
+  head
+    meta(charset='UTF-8')
+    title Pug Life
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    &lt;!--STYLES--&gt;
+    &lt;!--STYLES END--&gt;
+
+  body
+    // Header
+    block content
+    // Footer
+
+
+    &lt;!--SCRIPTS--&gt;
+    &lt;!--SCRIPTS END--&gt;
+</code></pre><p><small style="font-size:0.85em;display:block;margin-top:-15px;">SORRY! This thing doesn't highlight pug/jade code unfortunately 😞 I'll work on getting it fixed</small>
+
+That should be enough to get started for now. It will be the basic scaffolding for each of the pages in our Sails project. I&rsquo;ve left the header and footer as an exercise for the reader.
+Those <em><code>&lt;!--COMMENTS--&gt;</code></em> are used by Sails to inject your stylesheets and scripts into the page. I&rsquo;d leave them in there if I were you - shouldn&rsquo;t break anything, but you <em><strong>can</strong></em> pugify them and modify <em><strong>tasks/config/sails-linker.js</strong></em> to look for pug-style comments instead if you like (see the project link below for an example of how).</p>
+<p>Now we need a homepage template. It&rsquo;s going to live in the <strong>views/pages/homepage.pug</strong> file if you started off with the <em><strong>Empty</strong></em> project.</p>
+<pre><code class="language-pug" data-lang="pug">extends ../layouts/layout
+
+block content
+  div(align=&quot;center&quot;)
+    h1(style=&quot;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif&quot;) Pug Life
+    img(src=&quot;https://goo.gl/Maapfu&quot; style=&quot;max-width: 300px&quot;)
+</code></pre><p>Yes, something like this should do the trick 😏</p>
+<p><strong>sails lift</strong> again, and welcome yourself to Pug Life.
+<img src="sails_js_pug_templates.png" alt="Pug templates with Sails.js"></p>
+<h3 id="the-final-touches">The final touches</h3>
+<p>Remember how I said those <em><code>&lt;!--COMMENTS--&gt;</code></em> in the <strong>layout.pug</strong> file are where Sails will inject your CSS and JavaScript dependencies? That was only half true - first we need to tell it to do that.</p>
+<p>Open up the file <strong>tasks/config/sails-linker.js</strong>, and replace all instances of &ldquo;<strong>.ejs</strong>&rdquo; with &ldquo;<strong>.pug</strong>&rdquo;.
+Save, restart sails and we should be good to go!</p>
+<h2 id="but-i-want-it-now">BUT I WANT IT NOW</h2>
+<p>To avoid having to go through all the rigmarole of configuring and tweaking the view/template config when spinning up a new Sails project, and so that the core &lsquo;Web App&rsquo; functionality of Sails is available in puggy form, I&rsquo;ve created a little starter sails-and-pug-and-bulma-and-vue project, and left it up on GitHub in all it&rsquo;s furry glory if you&rsquo;d fancy a look.
+I christen this monstrosity <em>sails-starter-pugma</em>. You can find it <a href="https://git.carrotlabs.net/jarrod/sails-starter-pugma">here, <del>on GitHub</del> in the lab</a>, if it sounds like your thing.</p>
+<p>🐶</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/nodejs">#nodejs</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/pug">#pug</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/jade">#jade</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/javascript">#javascript</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/compressing-png-images-from-command-line/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/allow-only-cloudflare-traffic-to-web-server/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

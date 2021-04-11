@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Find user location using Perl | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/detective.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Find user location using Perl</h1>
+<div class="meta">
+  
+  
+  <time datetime="2012-03-11">March 11, 2012</time>
+</div>
+
+<p>The other day I finally put up a simple landing page for a project that I&rsquo;m working on. The site itself is fairly bare, and doesn&rsquo;t offer any features. It&rsquo;s essentially the old &ldquo;Under Construction&rdquo; page, but with balls.</p>
+<p>Rather than simply putting it out on the wild internet and forgetting it, I thought it would be interesting to log a few details about anyone who visits the page, to gather a few key demographics about people interested in the service such as their country and the time they spend browsing the site, among other things.</p>
+<p>To find the users location, more specifically, the country and state that they are browsing from, I chose to use the <a href="https://metacpan.org/module/Geo::IP">Geo::IP</a> module that I found on the CPAN.</p>
+<p>It is essentially a wrapper for the <a href="http://www.maxmind.com/download/geoip/api/c/">MaxMind C API</a>, which uses a database file of information gathered from ARIN, RIPE, APNIC, and LACNIC whois to map IP addresses to their geographical location.</p>
+<p>It&rsquo;s fairly simple to get up and running. Firstly however I would recommend installing the GeoIP C API - though there is a <a href="https://metacpan.org/module/Geo::IP::PurePerl"><del>PurePerl version</del></a>, which obviously will be a tad slower than it&rsquo;s C counterpart.</p>
+<p>After that, it was as simple as installing the Geo::IP module via CPAN, and writing a few lines of code.</p>
+<p>Now, there is one more step which I may have overlooked - probably the most important, and that is to download the database file which provides the data on IP-&gt;Country translation. I&rsquo;m using the free <a href="http://www.maxmind.com/app/geolite">GeoLite Database</a> for now, and it seems to be doing well for me so far, however there is a commercial alternative available via MaxMind&rsquo;s website. The GeoLite database is updated monthly, whereas the paid alternative is updated weekly and, according to MaxMind, is a more accurate version of the GeoLite Database.</p>
+<p>Anyway, now that we have everything we need, it&rsquo;s a simple matter of opening ViM, or your text editor of choice, and getting on with those few lines of Perl that I mentioned earlier.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl"><span style="color:#66d9ef">use</span> Geo::IP;
+ 
+<span style="color:#66d9ef">my</span> $ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;8.8.8.8&#34;</span>;
+<span style="color:#66d9ef">my</span> $gi <span style="color:#f92672">=</span> Geo::IP<span style="color:#f92672">-&gt;</span>open(<span style="color:#e6db74">&#34;/the/path/to/GeoLiteCity.dat&#34;</span>, GEOIP_STANDARD);
+<span style="color:#66d9ef">my</span> $record <span style="color:#f92672">=</span> $gi<span style="color:#f92672">-&gt;</span>record_by_address( $ip );
+</code></pre></div><p>And hey presto! You will (read <em>should</em>) have a shiny new Geo::IP::Record object now, full of all the juicy information about the IP you&rsquo;ve specified. To quickly dump this info out to your terminal screen I used the following, however you can now do with this data what you will.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl">$, <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\n&#34;</span>;
+<span style="color:#66d9ef">print</span> $record<span style="color:#f92672">-&gt;</span>country_code,
+      $record<span style="color:#f92672">-&gt;</span>country_code3,
+      $record<span style="color:#f92672">-&gt;</span>country_name,
+      $record<span style="color:#f92672">-&gt;</span>region,
+      $record<span style="color:#f92672">-&gt;</span>region_name,
+      $record<span style="color:#f92672">-&gt;</span>city,
+      $record<span style="color:#f92672">-&gt;</span>postal_code,
+      $record<span style="color:#f92672">-&gt;</span>latitude,
+      $record<span style="color:#f92672">-&gt;</span>longitude,
+      $record<span style="color:#f92672">-&gt;</span>time_zone,
+      $record<span style="color:#f92672">-&gt;</span>area_code,
+      $record<span style="color:#f92672">-&gt;</span>continent_code,
+      $record<span style="color:#f92672">-&gt;</span>metro_code;
+</code></pre></div><p>Exciting stuff? I know right.. Anyway, go have a look at the <a href="https://metacpan.org/module/Geo::IP">Geo::IP</a> module on CPAN if this interests you to any degree, I highly recommend it.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/perl">#perl</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/find-user-location-using-perl
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/using-googles-geocoding-api-with-perl/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/the-current-state-of-melbournes-public-transport-system/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

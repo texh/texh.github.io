@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>code on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/code/</link>
+    <description>Recent content in code on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Sep 2018 04:22:46 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using Pug templates with Sails.js</title>
+      <link>https://jarrod.linahan.id.au/blog/using-pug-templates-with-sailsjs/</link>
+      <pubDate>Sun, 09 Sep 2018 04:22:46 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/using-pug-templates-with-sailsjs/</guid>
+      <description>For a while now I&amp;rsquo;ve been hacking on a few Sails.js based projects, my long-running pet project ZHDict being one of them.
+After hacking on some Hexo themes, the first of which (which you&amp;rsquo;re currently looking at) uses Pug templating (the template engine formerly known as Jade) behind the scenes to render the HTML, and I&amp;rsquo;ve kinda grown to like it. You can think of pug as the love-child creation of Python and HTML after a steamy night of flipping bits.</description>
+    </item>
+    
+    <item>
+      <title>Node.js vs Java Play! Framework</title>
+      <link>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</link>
+      <pubDate>Thu, 03 Apr 2014 00:24:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/node-js-vs-java-play-framework/</guid>
+      <description>After having somewhat of a heated Facebook conversation with a friend about the Ups and Downs of various web frameworks, I was inspired to benchmark a simple &amp;ldquo;Hello World&amp;rdquo; to compare the speed and resource usage of Node.js and the Play! Framework (using Java).
+Being mostly Perl guys ourselves, my go-to tool for web wizardry is generally the awesome Catalyst MVC framework, can&amp;rsquo;t say the same about my friend.
+All the tests below were completed on my Laptop – Intel Core i5 M480 CPU @ 2.</description>
+    </item>
+    
+    <item>
+      <title>LNPPCF vs. LAMP</title>
+      <link>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</link>
+      <pubDate>Tue, 16 Apr 2013 01:03:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</guid>
+      <description>Every day it seems that someone is writing introductions and reviews about how awesome using the so-coined LAMP (Linux, Apache, MySQL &amp;amp; PHP) stack is. I too was once a lover of this choice of software for getting things online, however over the past few years I’ve slowly replaced most of those with other free alternatives and haven’t looked back for a moment. This website, along with most others that I look after nowadays, are running what I guess you could call a LNPPCF stack.</description>
+    </item>
+    
+    <item>
+      <title>Convert bytes to readable units in Perl/Java/PHP</title>
+      <link>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</link>
+      <pubDate>Wed, 06 Feb 2013 18:00:54 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</guid>
+      <description>I recently used code similar to that below in VPSMon, and came across a need where it would be convenient to display bytes as a more human-friendly string in Perl. Basically I’m building a script, and I want to convert the amount of available/free RAM on a machine from bytes to gigabytes for display to a user, but I figured may as well cover all bases and have this around in case it needs to display other units/multiples in the future.</description>
+    </item>
+    
+    <item>
+      <title>McDonald&#39;s Australia Mobile App</title>
+      <link>https://jarrod.linahan.id.au/blog/mcdonalds-australia-mobile-app/</link>
+      <pubDate>Fri, 02 Nov 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/mcdonalds-australia-mobile-app/</guid>
+      <description>It&amp;rsquo;s official(ly unofficial)! I just released the first, and quite soon after the second, version of McRosters. This simple little app allows McDonald&amp;rsquo;s staff to easily access their rosters on Android devices, and also has a few other handy little features built in as well.
+Now noone has any excuse to be late, as you can have your phone automatically set shift reminders and add them to your devices calendar or any linked Google Calendar accounts.</description>
+    </item>
+    
+    <item>
+      <title>Find user location using Perl</title>
+      <link>https://jarrod.linahan.id.au/blog/find-user-location-using-perl/</link>
+      <pubDate>Sun, 11 Mar 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/find-user-location-using-perl/</guid>
+      <description>The other day I finally put up a simple landing page for a project that I&amp;rsquo;m working on. The site itself is fairly bare, and doesn&amp;rsquo;t offer any features. It&amp;rsquo;s essentially the old &amp;ldquo;Under Construction&amp;rdquo; page, but with balls.
+Rather than simply putting it out on the wild internet and forgetting it, I thought it would be interesting to log a few details about anyone who visits the page, to gather a few key demographics about people interested in the service such as their country and the time they spend browsing the site, among other things.</description>
+    </item>
+    
+    <item>
+      <title>Where Am I? - Using Google Geocoding API with Perl</title>
+      <link>https://jarrod.linahan.id.au/blog/using-googles-geocoding-api-with-perl/</link>
+      <pubDate>Sun, 11 Mar 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/using-googles-geocoding-api-with-perl/</guid>
+      <description>Quite some time ago I stumbled across a similar blog post to this one which detailed how to access Google Maps&#39; geocoding API to find latitude and longitude coordinates from a street address.
+The process is extremely simple, and I just thought I&amp;rsquo;d give a quick overview of how the whole thing works.
+So to start off with, the base URL for the API service we&amp;rsquo;ll be using is http://maps.google.com/maps/api/geocode/json?sensor=false&amp;amp;address=</description>
+    </item>
+    
+  </channel>
+</rss>

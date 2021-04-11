@@ -1,0 +1,161 @@
+.timeline {
+  position: relative;
+}
+
+ul.timeline,
+ul.timeline li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: block;
+}
+
+.timeline:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  width: 2px;
+  background: #eee;
+  height: 100%;
+  top: -15px;
+  left: 0px;
+}
+
+.timeline .timeline-item {
+  position: relative;
+  background: #fff;
+  border: solid 1px #eee;
+  margin-bottom: 20px;
+  margin-left: 25px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  min-height: 80px;
+}
+
+.timeline .timeline-item:first-child:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: -20px;
+  left: -34px;
+
+
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+
+  border-bottom: 10px solid #eee;
+}
+
+.timeline .timeline-item:last-child:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 30px;
+  left: -34px;
+  width: 15px;
+  bottom: 0;
+  background: #fff;
+}
+
+.timeline .timeline-item.image {
+  /* max-width: 80%; */
+}
+
+.timeline .timeline-item.image img {
+  display: block;
+  border-radius: 3px;
+}
+
+.timeline .timeline-item .head {
+  padding: 5px 10px 0 10px;
+}
+
+.timeline .timeline-item .date {
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+.timeline .timeline-item .title {
+  font-weight: bold;
+  margin: 0;
+  font-size: inherit;
+}
+
+.timeline .timeline-item .where {
+  font-size: 0.8em;
+  line-height: 1em;
+  color: #aaa;
+  font-style: italic;
+}
+.timeline .timeline-item .where a { color: #aaa; }
+.timeline .timeline-item .where a:hover { text-decoration: underline; color: #999; }
+
+.timeline .timeline-item .tags {
+  margin: 5px 0 0 0;
+}
+.timeline .timeline-item .tags span {
+  color: #888;
+  background: #eee;
+  padding: 2px 4px;
+  font-size: 0.8em;
+  border-radius: 4px;
+}
+
+.timeline .timeline-item .thingy {
+  font-size: 0.9em;
+  padding: 5px 10px 10px 10px;
+}
+
+.timeline .timeline-item .blip {
+  position: absolute;
+  top: 26px;
+  left: -40px;
+  background: #fff;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+  border-radius: 50%;
+  border: solid 2px #eee;
+}
+
+.timeline .timeline-item .blip img {
+  max-height: 18px;
+  max-width: 18px;
+  display: block;
+  margin: 4px auto 0 auto;
+}
+
+.brag {
+  display: block;
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+.brag img {
+  max-width: 46%;
+  margin: 1%;
+  border-radius: 4px;
+}
+
+
+@media screen and (max-width: 767px) {
+  .timeline .timeline-item.image {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .brag img {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
+}
+
+blockquote {
+  margin: 10px 0 0 0;
+}
+

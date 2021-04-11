@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Compressing PNG Images from the Command Line | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/hippo.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Compressing PNG Images from the Command Line</h1>
+<div class="meta">
+  
+  
+  <time datetime="2018-09-04">September 4, 2018</time>
+</div>
+
+<p>I&rsquo;ve done gone and rebuilt this website once again.</p>
+<p>See those little &lsquo;me&rsquo;s at the top of each page? They <del>are</del> were the biggest files being loaded across the wire when you visit a page on this website. For the sake of saving bits and bytes, I figured I&rsquo;d shrink the images dimensions down from their original size to the size you see them now (80 pixels<sup>2</sup>
+ <a href="https://www.kylejlarson.com/blog/creating-retina-images-for-your-website/">× 2</a>).</p>
+<p>Starting out with a bunch of files that were 398 pixels<sup>2</sup>
+, and after a quick bit of Google-foo, I discovered that my mac had a secret tool on it called <a href="https://coderwall.com/p/ekhe8g/batch-processing-images-on-mac-with-sips"><strong>sips</strong></a> - The <em>scriptable image processing system</em></p>
+<p>So, this should be fun. From the directory where I keep the images (and after I&rsquo;d made a backup copy of the originals) I ran the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sips -Z <span style="color:#ae81ff">180</span> *
+</code></pre></div><p>And like magic, all the files had halved in size, dimensionally at least. The <strong>-Z</strong> flag tells sips to &ldquo;resample [an] image so height and width aren&rsquo;t greater than specified size&rdquo;, the <strong>180</strong> is the size that I wanted sips to output, and the <strong>*</strong> is a special character in your bash shell/command line that kinda means &lsquo;<em>all the files in this directory</em>&rsquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ du -hs ../*
+900K  images
+1.7M  images_original
+</code></pre></div><p>Wooo, that is, I think, a 47.2% decrease in the size of the images (there&rsquo;s quite a few in those directories).
+Let&rsquo;s see if we can do one better though.</p>
+<p>I used <a href="https://brew.sh/">Homebrew</a> to install a tool called <strong>pngquant</strong> - <em>&ldquo;a command-line utility and a library for lossy compression of PNG images&rdquo;</em> - though at a glance this tool is also available in the Debian repositories if that&rsquo;s your thing.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install pngquant
+$ pngquant --version
+2.12.0 <span style="color:#f92672">(</span>January 2018<span style="color:#f92672">)</span>
+</code></pre></div><p>Let&rsquo;s <a href="https://www.collinsdictionary.com/dictionary/english/burl#burl__2">give it a burl</a> then, shall we? I&rsquo;m working with the already-resized versions here, for those following along at home.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ pngquant --quality<span style="color:#f92672">=</span>65-80 --speed <span style="color:#ae81ff">1</span> *.png
+</code></pre></div><p>The command-line options are documented <a href="https://pngquant.org/">here</a>, or you can run <strong>pngquant &ndash;help</strong> to view them in your terminal.</p>
+<p>This time around the files weren&rsquo;t &lsquo;edited in place&rsquo;, so to speak, but compressed copies were made with <em>-fs8</em> appended to their name - ie, <em>spatula-fs8.png</em>.
+The following command will remove the &ldquo;-fs8&rdquo; from the compressed PNG files, but it will also overwrite the originals, which is fine by me at this stage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ find . -name <span style="color:#e6db74">&#39;*-fs8*&#39;</span> | <span style="color:#66d9ef">while</span> read f; <span style="color:#66d9ef">do</span> mv <span style="color:#e6db74">&#34;</span>$f<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>f//-fs8/<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">done</span>
+</code></pre></div><p>Now for the second moment of truth:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ du -hs <span style="color:#f92672">{</span>original,sips,pngquant<span style="color:#f92672">}</span>
+1.7M  original
+900K  sips
+308K  pngquant
+</code></pre></div><p>I like <em>where this is going</em>. At a glance I can&rsquo;t really tell that much of a difference between the original and compressed/shrunken versions of the images.</p>
+<p>Wait, what&rsquo;s that?! Another wild PNG optimiser appeared!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install optipng
+$ optipng -o7 *
+</code></pre></div><p><strong>73 bytes saved</strong>
+Ok, so I knew I was pushing it by this stage so I didn&rsquo;t <em>really</em> expect for there to much of a difference made as these images had already been compressed using pngquant.</p>
+<p>After running optipng once again, this time on the shrunken-but-not-optimised files, the final comparison is in and it&rsquo;s clear to me that we have a winner:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">1.7M  original
+900K  sips
+308K  pngquant
+816K  optipng
+</code></pre></div><p>Looks like for a quick &amp; easy way to shrink &amp; compress PNG files for use on the web, a combination of <strong>sips</strong> for resizing and <strong>pngquant</strong> for compressing is a good combination.</p>
+<p>✌</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/osx">#osx</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/mac">#mac</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/vs">#vs</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/debian">#Debian</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/file-syncronisation-with-unison/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/using-pug-templates-with-sailsjs/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

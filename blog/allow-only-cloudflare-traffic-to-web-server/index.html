@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Allowing only CloudFlare traffic to web server | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/cloud.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Allowing only CloudFlare traffic to web server</h1>
+<div class="meta">
+  
+  
+  <time datetime="2018-09-19">September 19, 2018</time>
+</div>
+
+<p>The other day I had a somewhat panicked client come to me, worried by threats of DDoS attacks by some rogue user.
+In order to reduce the attack vector in case said bad actor made good on their threats, I thought it might not be a terrible idea to disallow all HTTP(S) traffic that doesn&rsquo;t come from CloudFlare. The client already utilises them for caching and load balancing, and their website claims that they are there to help in such situations.</p>
+<p>Conveniently enough, there is a list of <a href="https://www.cloudflare.com/ips/">CloudFlare&rsquo;s IP address ranges</a> available online, along with text-only versions.</p>
+<p>Combining these lists with a little bit of bash foo, I came up with the following <em>(less than perfect)</em> script, which is currently set to run as a cron task every now and then.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+<span style="color:#75715e"># Only allow HTTP(s) access from CloudFlare</span>
+<span style="color:#75715e">#</span>
+
+<span style="color:#75715e"># Ensure cron task has a sensible PATH</span>
+PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#39;</span>
+
+<span style="color:#75715e"># Add trusted IPv4 addresses here, one per line</span>
+<span style="color:#75715e"># Could do something similar for IPv6 if any of us had one</span>
+TRUSTED_IPV4<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">X.X.X.X/32
+</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#75715e"># Create a new chain called ‘cfX_http’.</span>
+iptables -N cf4_http
+ip6tables -N cf6_http
+
+iptables -F cf4_http
+ip6tables -F cf6_http
+
+<span style="color:#75715e"># Add *our* trusted IPv4 addresses</span>
+<span style="color:#66d9ef">for</span> x in $TRUSTED_IPV4; <span style="color:#66d9ef">do</span>
+  iptables -A cf4_http --src $x -j ACCEPT
+<span style="color:#66d9ef">done</span>
+
+<span style="color:#75715e"># Add the CloudFlare IPv4 Addresses</span>
+<span style="color:#66d9ef">for</span> x in <span style="color:#66d9ef">$(</span>curl https://www.cloudflare.com/ips-v4<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span>
+  iptables -A cf4_http --src $x -j ACCEPT
+<span style="color:#66d9ef">done</span>
+
+<span style="color:#75715e"># Add the CloudFlare IPv6 Addresses</span>
+<span style="color:#66d9ef">for</span> x in <span style="color:#66d9ef">$(</span>curl https://www.cloudflare.com/ips-v6<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span>
+  ip6tables -A cf6_http --src $x -j ACCEPT
+<span style="color:#66d9ef">done</span>
+
+<span style="color:#75715e"># Drop connections from any other IP address</span>
+iptables  -A cf4_http -j DROP
+ip6tables -A cf6_http -j DROP
+
+<span style="color:#75715e"># Use chain ‘cfX_http’ for packets coming to cfX_http ports</span>
+iptables  -I INPUT -m tcp -p tcp --dport <span style="color:#ae81ff">80</span>  -j cf4_http
+ip6tables -I INPUT -m tcp -p tcp --dport <span style="color:#ae81ff">80</span>  -j cf6_http
+iptables  -I INPUT -m tcp -p tcp --dport <span style="color:#ae81ff">443</span> -j cf4_http
+ip6tables -I INPUT -m tcp -p tcp --dport <span style="color:#ae81ff">443</span> -j cf6_http
+
+<span style="color:#75715e"># Persist rules (ie, saved on reboot)</span>
+iptables-save &gt; /etc/iptables/rules.v4
+ip6tables-save &gt; /etc/iptables/rules.v6
+</code></pre></div><p>Before getting excited and running this on your own machine, keep in mind it was developed and run on a Debian 8 (Jessie) machine that already has the <strong>iptables</strong> and <strong>iptables-persistent</strong> packages installed.</p>
+<p><strong>Caveat Empdor:</strong> Keep in mind that should either of those text files are un-downloadable things will get weird/broken, and your sites potentially not accessible.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/cloudflare">#CloudFlare</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/iptables">#iptables</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/debian">#Debian</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/server">#server</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/using-pug-templates-with-sailsjs/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/rgb-led-power-usage-calculator/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

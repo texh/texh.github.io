@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Life on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/categories/life/</link>
+    <description>Recent content in Life on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 14 Feb 2014 06:52:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/categories/life/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Finally Bit the Bullet</title>
+      <link>https://jarrod.linahan.id.au/blog/finally-bit-the-bullet/</link>
+      <pubDate>Fri, 14 Feb 2014 06:52:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/finally-bit-the-bullet/</guid>
+      <description>So, it’s happened. After a long time of falling into disrepair, the spaghetti code that was once behind this website has been swept under a rug (git commit; cd ../; rm -rf blog), and replaced with WordPress.
+Hopefully this means that it’ll be easier for me to manage the content on the site, and will also inspire me to write a little more. Perhaps not – only time will tell.</description>
+    </item>
+    
+    <item>
+      <title>Another year, another Android app</title>
+      <link>https://jarrod.linahan.id.au/blog/another-year-another-android-app/</link>
+      <pubDate>Fri, 04 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/another-year-another-android-app/</guid>
+      <description>So what better way to kick of 2013 than releasing something to Google play for all the other nerds out there.
+The concept is simple – I wanna see live statistics about my SolusVM-based VPS servers, but the only other apps I found in the Play Store either didn’t do what I wanted, or didn’t work at all.
+VPSMon is super simple, and gives you a quick overview of your VPS servers disk usage and bandwidth, and its current memory usage.</description>
+    </item>
+    
+    <item>
+      <title>The World Didn&#39;t End</title>
+      <link>https://jarrod.linahan.id.au/blog/the-world-did-not-end/</link>
+      <pubDate>Sun, 23 Dec 2012 02:48:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/the-world-did-not-end/</guid>
+      <description>It would seem that the world didn’t end on the 21st of this month, as predicted by the ancient Mayans, which means that tomorrow is still Christmas day, and that there is only one week left of 2012.
+And man has it been a hell of a year. We’ve all seen a dramatic increase in the number of ‘memes’ scattered throughout our newsfeeds and timelines, danced way too many times to Gangnam Style, and decided that Aztec patterns are the new black.</description>
+    </item>
+    
+    <item>
+      <title>The Current State of Melbournes Public Transport System</title>
+      <link>https://jarrod.linahan.id.au/blog/the-current-state-of-melbournes-public-transport-system/</link>
+      <pubDate>Sat, 04 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/the-current-state-of-melbournes-public-transport-system/</guid>
+      <description>Tonight after leaving my house for work I was thoroughly dismayed when I found that I&amp;rsquo;d forgotten to grab my MyKi smartcard before running for the train.
+I remember a day not all too long ago when this wouldn&amp;rsquo;t be an issue. You would simply buy a two-hour metcard ticket and be on your way. However tonight after fare evading on the country train I catch to the city, it was much to my discontent that there are now officially no longer any metcard machines in service on the CBD network.</description>
+    </item>
+    
+  </channel>
+</rss>

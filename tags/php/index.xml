@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>php on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/php/</link>
+    <description>Recent content in php on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Jun 2018 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Grep in cPanel or Shared Hosting Environment</title>
+      <link>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</link>
+      <pubDate>Thu, 28 Jun 2018 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</guid>
+      <description>Being a command-line geek myself, it can be a massive pain in the ass not having SSH access to a client&amp;rsquo;s hosting service. Simple things like finding where a previous developer has declared some variable or template code can become what feels like a never-ending nightmare.
+Never mind dear, PHP to the rescue…
+&amp;lt;?php header(&amp;#34;Content-Type: text/plain&amp;#34;); // Replace $search with what you&amp;#39;re looking for // You could always make it a $_GET param.</description>
+    </item>
+    
+    <item>
+      <title>Convert bytes to readable units in Perl/Java/PHP</title>
+      <link>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</link>
+      <pubDate>Wed, 06 Feb 2013 18:00:54 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/convert-bytes-to-readable-units-in-perl/</guid>
+      <description>I recently used code similar to that below in VPSMon, and came across a need where it would be convenient to display bytes as a more human-friendly string in Perl. Basically I’m building a script, and I want to convert the amount of available/free RAM on a machine from bytes to gigabytes for display to a user, but I figured may as well cover all bases and have this around in case it needs to display other units/multiples in the future.</description>
+    </item>
+    
+  </channel>
+</rss>

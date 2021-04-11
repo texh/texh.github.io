@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>geo on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/geo/</link>
+    <description>Recent content in geo on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Mar 2012 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/geo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Where Am I? - Using Google Geocoding API with Perl</title>
+      <link>https://jarrod.linahan.id.au/blog/using-googles-geocoding-api-with-perl/</link>
+      <pubDate>Sun, 11 Mar 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/using-googles-geocoding-api-with-perl/</guid>
+      <description>Quite some time ago I stumbled across a similar blog post to this one which detailed how to access Google Maps&#39; geocoding API to find latitude and longitude coordinates from a street address.
+The process is extremely simple, and I just thought I&amp;rsquo;d give a quick overview of how the whole thing works.
+So to start off with, the base URL for the API service we&amp;rsquo;ll be using is http://maps.google.com/maps/api/geocode/json?sensor=false&amp;amp;address=</description>
+    </item>
+    
+  </channel>
+</rss>

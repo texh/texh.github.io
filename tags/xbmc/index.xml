@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XBMC on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/xbmc/</link>
+    <description>Recent content in XBMC on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Sep 2012 09:00:00 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/xbmc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Shiny New Pie - Raspberry Pi, that is</title>
+      <link>https://jarrod.linahan.id.au/blog/a-shiny-new-pie-raspberry-pi-that-is/</link>
+      <pubDate>Thu, 20 Sep 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/a-shiny-new-pie-raspberry-pi-that-is/</guid>
+      <description>So although I may have missed the boat a bit, I finally got around to ordering myself a Raspberry Pi (model B) from element13.. Two days later, and it arrived at my front door - wrapped up snugly in a whole bunch of bubble wrap waiting for me to start tinkering.
+So far I&amp;rsquo;ve managed to get a fairly functional XBMC/raspbmc set-up going, however I still need to find a powered USB hub to get my old portable hard drive to work with the raspberry pi.</description>
+    </item>
+    
+  </channel>
+</rss>

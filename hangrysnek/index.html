@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv=X-UA-Compatible content="IE=edge" />
+  <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>Hangry Snek</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+      -webkit-touch-callout: none; /* iOS Safari */
+      user-select: none;
+    }
+    html { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; }
+    body {
+      display: flex;
+      height: 100%;
+      background: #000;
+      margin: 0;
+      padding: 0;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    [v-cloak] { display: none !important }
+
+    #app {
+      margin: auto;
+      display: flex;
+      flex-grow: 1;
+      height: 100%;
+      flex-direction: column;
+    }
+
+    #app.desktop {
+      flex-grow: initial;
+      height: initial;
+      border: solid 3px #aaa;
+    }
+
+    svg#game {
+      display: block;
+      margin: auto;
+      width: 100%;
+      flex-shrink: 0;
+      flex-grow: 1;
+      background: #000;
+    }
+
+    .desktop svg#game {
+      width: 500px;
+      height: 500px;
+    }
+
+    .debug {
+      position: fixed;
+      font-size: 0.8em;
+      bottom: 30px;
+      right: 30px;
+      width: 350px;
+      border: solid 3px #333;
+      background: #fff;
+      white-space: pre-wrap;
+      padding: 10px;
+      pointer-events: none;
+    }
+
+    .score {
+      background: black;
+      border-bottom: solid 1px #aaa;
+      font-size: 12px;
+      line-height: 20px;
+      padding: 5px 10px;
+      color: #fff;
+      /* text-shadow: 1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black; */
+    }
+
+    .desktop .score {
+      font-size: 20px;
+      line-height: 30px;
+    }
+
+    .mcontrols {
+      display: flex;
+      background: black;
+      border-top: solid 1px #aaa;
+      line-height: 50px;
+    }
+
+    .desktop .mcontrols { display: none; }
+
+    .mcontrols a {
+      display: block;
+      flex-grow: 1;
+      text-align: center;
+      color: #fff;
+      border-right: solid 1px #aaa;
+    }
+    .mcontrols a:nth-child(2) span,
+    .mcontrols a:nth-child(3) span
+    {
+      transform: rotate(90deg);
+      display: inline-block;
+    }
+
+    .mcontrols a:last-child { border: none; }
+    </style>
+</head>
+
+<body>
+<div id="app" :class="{ desktop: isDesktop }" v-cloak>
+  <div class="score">
+    SCORE {{ score }}
+    <div style="float: right">
+      HI {{ highscore }}
+    </div>
+  </div>
+  <svg ref="svg" id="game" :view-box.camel="`0 0 ${screen.width} ${screen.height}`" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <template v-if="showGrid" v-for="i in Math.floor(screen.height / 10)">
+      <line x1="0" :y1="i * 10" :x2="screen.width" :y2="i * 10" stroke="#111" />
+    </template>
+    <template v-if="showGrid" v-for="i in Math.floor(screen.width / 10)">
+      <line :x1="i * 10" y1="0" :x2="i * 10" :y2="screen.height" stroke="#111" />
+    </template>
+
+    <circle v-if="food" r="5" :cx="food.x + 5" :cy="food.y + 5" fill="white" />
+
+    <template v-for="(part, idx) in snake.body">
+      <rect :key="idx" :x="part.x" :y="part.y" height="10" width="10" :fill="idx === snake.body.length -1 ? 'green' : 'lightgreen'" />
+    </template>
+  </svg>
+
+  <div class="mcontrols">
+    <a @click="setDirection('ArrowLeft')" @touchstart.prevent.stop="setDirection('ArrowLeft')"><span>&lt;</span></a>
+    <a @click="setDirection('ArrowUp')" @touchstart.prevent.stop="setDirection('ArrowUp')"><span>&lt;</span></a>
+    <a @click="setDirection('ArrowDown')" @touchstart.prevent.stop="setDirection('ArrowDown')"><span>&gt;</span></a>
+    <a @click="setDirection('ArrowRight')" @touchstart.prevent.stop="setDirection('ArrowRight')"><span>&gt;</span></a>
+  </div>
+
+  <div class="debug" v-if="debug">{{
+    { score, speed, screen, food, head: snake.body[snake.body.length-1] }
+  }}</div>
+</div>
+
+<script type="text/javascript">
+;(function(){
+  const MAX_SPEED = 9
+
+  new Vue({
+    el: "#app",
+    data: {
+      screen: { height: 0, width: 0 }, // { height, width },
+      state: 'playing',
+      debug: false,
+      isDesktop: false,
+      showGrid: true,
+      score: 0,
+      highscore: 0,
+      speed: 1,
+      lastTick: 0,
+      snake: {
+        xdir: 0,
+        ydir: 0,
+        body: []
+      },
+      food: null
+    },
+
+    mounted () {
+      document.addEventListener('keydown', this.onKeyDown)
+      this.updateLayout()
+
+      const hs = localStorage.getItem('hangry_hs')
+      if (hs) { this.highscore = parseInt(hs) }
+
+      this.start()
+    },
+
+    beforeDestroy () {
+      cancelAnimationframe(this.raf)
+      document.removeEventListener('keydown', this.onKeyDown)
+    },
+
+    methods: {
+      start () {
+        console.clear()
+        this.state = 'playing'
+        this.score = 0
+        this.speed = 4
+        this.snake = {
+          xdir: 0,
+          ydir: 0,
+          body: [{ x: this.zeroify(this.screen.width / 2), y: this.zeroify(this.screen.height / 2) }]
+        }
+        this.addFood()
+        this.raf = requestAnimationFrame(this.loop)
+      },
+
+      onKeyDown (e) {
+        if (this.state !== 'playing') {
+          return this.start()
+        }
+        this.setDirection(e.key)
+      },
+
+      setDirection (dir) {
+        switch (dir) {
+          case 'ArrowUp':
+            if (this.snake.ydir && this.snake.xdir === 0) { return }
+            this.snake.xdir = 0
+            this.snake.ydir = -1
+            break
+          case 'ArrowDown':
+            if (this.snake.ydir && this.snake.xdir === 0) { return }
+            this.snake.xdir = 0
+            this.snake.ydir = 1
+            break
+          case 'ArrowLeft':
+            if (this.snake.xdir && this.snake.ydir === 0) { return }
+            this.snake.xdir = -1
+            this.snake.ydir = 0
+            break
+          case 'ArrowRight':
+            if (this.snake.xdir && this.snake.ydir === 0) { return }
+            this.snake.xdir = 1
+            this.snake.ydir = 0
+        }
+      },
+
+      updateLayout () {
+        const { clientWidth, clientHeight } = this.$refs.svg
+
+        this.screen.width = this.zeroify(clientWidth)
+        this.screen.height = this.zeroify(clientHeight)
+      },
+
+      // Well, this is shit :)
+      zeroify (num) {
+        const wt = (num + '').split('')
+        wt[wt.length - 1] = 0
+        return parseInt(wt.join(''), 10)
+      },
+
+      addFood () {
+        // Make sure the food isn't inside the snek
+        let food
+        do {
+          food = {
+            x: Math.floor(Math.random() * (this.screen.width/10)) * 10,
+            y: Math.floor(Math.random() * (this.screen.height/10)) * 10,
+          }
+        } while (false)
+
+        this.food = food
+      },
+
+      loop (timestamp) {
+        const tick = Math.max(0, 100 - (this.speed * 10))
+        // if (this.lastTick + 100 > timestamp) { return this.raf = requestAnimationFrame(this.loop) }
+        if (this.lastTick + tick > timestamp) { return this.raf = requestAnimationFrame(this.loop) }
+        this.lastTick = timestamp
+
+        // Check if the next move would be an eat, and if it would then turn the food into the head and skip the next bumbum bit
+        let head = this.snake.body[this.snake.body.length - 1]
+        const nx = head.x + 10 * this.snake.xdir
+        const ny = head.y + 10 * this.snake.ydir
+
+        if (nx === this.food.x && ny === this.food.y) {
+          this.snake.body.push({ x: this.food.x, y: this.food.y })
+          this.score++
+          this.addFood()
+          if (this.score % 5 === 0) { this.speed ++ }
+        } else if (this.snake.xdir || this.snake.ydir) {
+          const bum = this.snake.body.shift()
+          bum.x = head.x + (10 * this.snake.xdir)
+          bum.y = head.y + (10 * this.snake.ydir)
+          this.snake.body.push(bum)
+          head = bum
+
+          // Check if the snake ran into itself
+          for (let i = 0; i < this.snake.body.length - 1; i++) {
+            if (this.snake.body[i].x === head.x && this.snake.body[i].y === head.y) {
+              return this.ded()
+            }
+          }
+        }
+
+        // Check if he's utside the game area
+        if (head.x < 0 || head.x >= this.screen.width || head.y < 0 || head.y >= this.screen.height) {
+          return this.ded()
+        }
+
+        this.raf = requestAnimationFrame(this.loop)
+      },
+
+      ded () {
+        cancelAnimationFrame(this.raf)
+
+        this.state = 'ded'
+        alert('u ded')
+
+        if (this.score > this.highscore) {
+          localStorage.setItem('hangry_hs', this.score)
+          this.highscore = this.score
+          alert(`EYYY, not bad! ${this.score} points is your highest yet`)
+        }
+
+        this.start()
+      }
+    }
+  })
+}())
+</script>
+</body>
+</html>

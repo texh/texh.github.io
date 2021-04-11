@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>Where Am I? - Using Google Geocoding API with Perl | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/imhere.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>Where Am I? - Using Google Geocoding API with Perl</h1>
+<div class="meta">
+  
+  
+  <time datetime="2012-03-11">March 11, 2012</time>
+</div>
+
+<p>Quite some time ago I stumbled across a similar blog post to this one which detailed how to access Google Maps' geocoding API to find latitude and longitude coordinates from a street address.</p>
+<p>The process is extremely simple, and I just thought I&rsquo;d give a quick overview of how the whole thing works.</p>
+<p>So to start off with, the base URL for the API service we&rsquo;ll be using is <a href="http://maps.google.com/maps/api/geocode/json?sensor=false&amp;address=">http://maps.google.com/maps/api/geocode/json?sensor=false&amp;address=</a></p>
+<p>As you may be able to tell from a quick glance at the above URL, this will return a JSON encoded string containing the details of the place you&rsquo;re looking for (if the almighty Google servers managed to find such a place). If XML is more your style, simply substituting the &ldquo;json&rdquo; for &ldquo;xml&rdquo; in the URL should suffice, but I love the simplicity and ease of use that JSON offers, thus my following examples will be related to the JSON flavour of the geocoding API.</p>
+<p>So a simple perl script to find &ldquo;Southern Cross Station, Melbourne&rdquo; could look something like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl"><span style="color:#75715e">#!/usr/bin/perl</span>
+
+<span style="color:#66d9ef">use</span> strict;
+<span style="color:#66d9ef">use</span> warnings;
+
+<span style="color:#66d9ef">use</span> LWP::Simple;
+<span style="color:#66d9ef">use</span> URI::Escape;
+<span style="color:#66d9ef">use</span> JSON;
+
+<span style="color:#66d9ef">my</span> $address <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Southern Cross Station, Melbourne&#34;</span>;
+
+<span style="color:#66d9ef">my</span> $geo_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://maps.google.com/maps/api/geocode/json?sensor=false&amp;address=&#34;</span>;
+<span style="color:#66d9ef">my</span> $url <span style="color:#f92672">=</span> $geo_url<span style="color:#f92672">.</span> uri_escape($address);
+
+<span style="color:#75715e"># GET and decode the JSON response from Google Maps</span>
+<span style="color:#66d9ef">my</span> $response <span style="color:#f92672">=</span> get($url);
+<span style="color:#66d9ef">my</span> $json <span style="color:#f92672">=</span> decode_json($response);
+
+<span style="color:#75715e"># Parse out some relevant data</span>
+<span style="color:#66d9ef">my</span> $location <span style="color:#f92672">=</span> $json<span style="color:#f92672">-&gt;</span>{results}[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">-&gt;</span>{geometry}<span style="color:#f92672">-&gt;</span>{location};
+<span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Latitude: &#34;</span>, $location<span style="color:#f92672">-&gt;</span>{lat},
+    <span style="color:#e6db74">&#34;\tLongiude: &#34;</span>, $location<span style="color:#f92672">-&gt;</span>{lng}, <span style="color:#e6db74">&#34;\n&#34;</span>;
+</code></pre></div><p>Ok great, so I&rsquo;ve hard-coded the address, and only used a small portion of the response given by the maps API server, but as you can see (if you run this script), it should return the coordinates of the station as expected. In my test I received</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Latitude: -37.8181602  Longiude: 144.9533883
+</code></pre></div><p>Now, conversely you are able to get the street address from a set of {lat,long}itude points by substituting them where we used the &ldquo;Address&rdquo;.</p>
+<p>As you can see,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl"><span style="color:#66d9ef">my</span> $location <span style="color:#f92672">=</span> $json<span style="color:#f92672">-&gt;</span>{results}[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">-&gt;</span>{geometry}<span style="color:#f92672">-&gt;</span>{location};
+</code></pre></div><p>$location is being set to only a small subset of what is actually being returned. Should you have wanted to get the street address, then something along the lines of</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl">$json<span style="color:#f92672">-&gt;</span>results[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">-&gt;</span>{formatted_address}
+</code></pre></div><p>would have given a nicely formatted street address.</p>
+<p>Specificity is also key here, as obviously there may be more than one &ldquo;Southern Cross Station&rdquo; in the world. When looking for street addresses try to specify state/suburb or even postcode where possible so as not to get false positives, or try filtering out dud results if there are more than one returned.</p>
+<p>If you&rsquo;re interested, I strongly recommend taking a look at this nifty feature from Google. Make a few requests and take a look at the whole response to see the other good stuff that gets returned, get a feel for the whole process and go nuts with some geomagick.</p>
+<p>A few sidenotes.. Google will limit the amount of requests per server/IP per day to around 2,500. As with most things, YMMV.</p>
+<p>Check out <a href="https://developers.google.com/maps/documentation/geocoding/">https://developers.google.com/maps/documentation/geocoding/</a> for the full run down.</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/perl">#perl</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/code">#code</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/google">#google</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/geo">#geo</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+  <strong>Originally published at:</strong>
+  http://texh.net/blog/using-googles-geocoding-api-with-perl
+
+
+<hr />
+<div style="display: flex;">
+  
+  <a style="margin-left: auto" href="/blog/find-user-location-using-perl/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

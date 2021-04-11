@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="shortcut icon" href="/images/bitmoji/a.png" />
+    
+    
+    <title>File Syncronisation with Unison | Jarrod Linahan</title>
+</head>
+<body><header>
+  <nav>
+    <ul>
+      
+      <li>
+        <a href="/">
+          
+          Home
+        </a>
+      </li>
+      
+      <li>
+        <a href="/blog/">
+          
+          Words
+        </a>
+      </li>
+      
+      <li>
+        <a href="/portfolio/">
+          
+          Things
+        </a>
+      </li>
+      
+      <li>
+        <a href="/about/">
+          
+          About
+        </a>
+      </li>
+      
+    </ul>
+
+    <button class="btn-theme is-small js" style="display: block;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="visible-light"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+  </nav>
+</header>
+<main>
+
+
+
+<div class="head-img">
+  <a href="/">
+    <img src="/images/bitmoji/paper-plane.png" />
+  </a>
+</div>
+
+
+<article>
+<h1>File Syncronisation with Unison</h1>
+<div class="meta">
+  
+  
+  <time datetime="2018-09-03">September 3, 2018</time>
+</div>
+
+<p>What was supposed to be a quick-and-dirty on 2-way file synchronisation for Debian servers using Unison.</p>
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2-way synchronisation</td>
+<td><em>May</em> need to build it from source code</td>
+</tr>
+<tr>
+<td>Exists in Debian repositories</td>
+<td>Not under &lsquo;active&rsquo; development</td>
+</tr>
+<tr>
+<td>Runs under Unix/Windows/OSX</td>
+<td>More than 2 nodes Star topology recommended (ie, single point of failure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Homepage:</strong> <a href="https://www.cis.upenn.edu/~bcpierce/unison/">https://www.cis.upenn.edu/~bcpierce/unison/</a><br>
+<strong>GitHub:</strong> <a href="https://github.com/bcpierce00/unison">https://github.com/bcpierce00/unison</a><br>
+<strong>Manual:</strong> <a href="https://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html">https://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html</a></p>
+<p><strong>See Also:</strong> <a href="https://medium.com/@yobi.kim/how-to-install-unison-91c9fb36ac09">https://medium.com/@yobi.kim/how-to-install-unison-91c9fb36ac09</a></p>
+<h2 id="installation">Installation</h2>
+<h3 id="from-debian-repos">From Debian Repos</h3>
+<p>Assuming a Debian server, we <em>can</em> install Unison using apt-get.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get update <span style="color:#f92672">&amp;&amp;</span> sudo apt-get install unison
+</code></pre></div><p>Currently (2018/09/03) this will install the following version of Unison, depending on the version of Debian you&rsquo;re running:</p>
+<ul>
+<li><strong>8 Jessie:</strong> v2.40.102</li>
+<li><strong>9 Stretch:</strong> v2.48.3</li>
+</ul>
+<h3 id="from-source">From source</h3>
+<p>If a later release than that published in the Debian repositories is required, we can build it from source.
+Grab the latest release source code from <a href="https://github.com/bcpierce00/unison/releases">https://github.com/bcpierce00/unison/releases</a></p>
+<p>Make sure we have the required OCaml compiler stuff</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install ocaml-native-compilers
+</code></pre></div><p>Then build it (replacing 2.51.2 with whatever is the latest release)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget https://github.com/bcpierce00/unison/archive/v2.51.2.tar.gz
+tar -zxf v2.51.2.tar.gz
+cd unison-2.51.2/
+make all <span style="color:#f92672">&amp;&amp;</span> make test <span style="color:#f92672">&amp;&amp;</span> sudo HOME<span style="color:#f92672">=</span>/usr make install
+</code></pre></div><h2 id="hmm">Hmm&hellip;</h2>
+<p>Looks like neither of the above installation methods provide us with the <strong>unison-fsmonitor</strong> tool, which would allow us to run Unison <em>kinda</em> as a daemon/service with some tweaks.
+The <strong>unison-fsmonitor</strong> tool can watch a directory for file changes, and trigger Unison to do it&rsquo;s sync-thang automatically without the need to call it manually.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo curl -L -o /bin/unison-fsmonitor
+https://github.com/TentativeConvert/Syndicator/raw/master/unison-binaries/unison-fsmonitor
+sudo chmod +x /bin/unison-fsmonitor
+</code></pre></div><h2 id="testing-it-out-locally">Testing it out locally</h2>
+<p>It&rsquo;s possible to synchronise 2 directories on the same machine, so in the name of KISS, let&rsquo;s try that out first.
+In this experiment we&rsquo;ll try to keep the following two directories &lsquo;in sync&rsquo;:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/home/jarrod/unison/local-a
+/home/jarrod/unison/local-b
+</code></pre></div><h3 id="running-unison-manually">Running Unison Manually</h3>
+<h4 id="configuration">Configuration</h4>
+<p>In our Unison &lsquo;profile&rsquo;, let&rsquo;s try the following so it knows &lsquo;sup
+<strong>/home/jarrod/.unison/local.prf</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/jarrod/unison/local-a</span>
+<span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/jarrod/unison/local-b</span>
+<span style="color:#a6e22e">auto</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">true</span>
+<span style="color:#a6e22e">batch</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">true</span>
+</code></pre></div><h4 id="push-the-big-red-button">Push the big red button</h4>
+<p>Apparently running Unison should be as simple as calling unison with the name of our profile (in this case &lsquo;local&rsquo;).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">unison local
+</code></pre></div><p>Well, that&rsquo;s interesting.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Nothing to do: replicas have been changed only in identical ways since last sync.
+</code></pre></div><p>Makes sense. Let&rsquo;s create some test files and run it</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">jarrod@ha01:~/unison$ tree
+.
+|-- local-a
+| |-- me
+| |-- test-b
+| |-- test-c
+| `-- test-d
+`-- local-b
+ |-- test-a
+ |-- test-d
+ |-- test-e
+ |-- test-f
+ `-- test-g
+2 directories, 9 files
+</code></pre></div><p>FUCKING YES! 😄</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">jarrod@ha01:~/unison$ tree
+.
+|-- local-a
+| |-- test-a
+| |-- test-b
+| |-- test-c
+| |-- test-d
+| |-- test-e
+| |-- test-f
+| `-- test-g
+`-- local-b
+ |-- test-a
+ |-- test-b
+ |-- test-c
+ |-- test-d
+ |-- test-e
+ |-- test-f
+ `-- test-g
+2 directories, 14 files
+</code></pre></div><p>Remove some files, and&hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">jarrod@ha01:~/unison$ rm local-b/test-[a-e]
+jarrod@ha01:~/unison$ tree 
+.
+|-- local-a
+| |-- test-a
+| |-- test-b
+| |-- test-c
+| |-- test-d
+| |-- test-e
+| |-- test-f
+| `-- test-g
+`-- local-b
+ |-- test-f
+ `-- test-g
+2 directories, 9 files
+jarrod@ha01:~$ unison local
+jarrod@ha01:~/unison$ tree
+.
+|-- local-a
+| |-- test-f
+| `-- test-g
+`-- local-b
+ |-- test-f
+ `-- test-g
+2 directories, 4 files
+</code></pre></div><p>Ok. So it basically does what I want, but only when I tell it to.
+How can we automate this process?</p>
+<h3 id="watch-directories-and-sync-automatically-with-unison">Watch directories and sync automatically with Unison</h3>
+<p>Building on our above Unison profile, let&rsquo;s use the following</p>
+<p><strong>/home/jarrod/.unison/local.prf</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/jarrod/unison/local-a</span>
+<span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/jarrod/unison/local-b</span>
+<span style="color:#a6e22e">auto</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">true</span>
+<span style="color:#a6e22e">batch</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">true</span>
+<span style="color:#a6e22e">repeat</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">watch</span>
+</code></pre></div><p>Now, when we run Unison with our &lsquo;local&rsquo; profile, it&rsquo;ll keep running and watch the ' <strong>root</strong>&rsquo; directories for changes.</p>
+<p>This is great!</p>
+<h2 id="where-it-all-comes-crashing-down-">Where it all comes crashing down 😓</h2>
+<p>The maximum number of files that can be &lsquo;watched&rsquo; for changes by in Linux using <a href="http://man7.org/linux/man-pages/man7/inotify.7.html">inotify</a> (which I can only assume unison-fsmonitor is doing) is defined by the <strong>fs.inotify.max_user_watches</strong> system variable. By default (in Debian land, at least) this number is 8192.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># cat /proc/sys/fs/inotify/max_user_watches</span>
+<span style="color:#ae81ff">8192</span>
+</code></pre></div><p>Ok, so usually we are able to change these values - that&rsquo;s the whole point of having configuration options, right?</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># echo 524288 &gt; /proc/sys/fs/inotify/max_user_watches</span>
+-su: /proc/sys/fs/inotify/max_user_watches: Permission denied
+</code></pre></div><p>Permission <strong>fucking what</strong>?</p>
+<p>It&rsquo;s interesting to note that I&rsquo;ve tried this on another &ldquo;VPS&rdquo; that runs under OpenVZ on my own hardware,
+and it <em><strong>appears</strong></em> to be a limitation of this type of virtualisation, not necessarily something that has been overridden/forbidden by a host.</p>
+<p>Trying the same command on a KVM virtual machine is a whole &lsquo;nother story.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># echo 8192 &gt; /proc/sys/fs/inotify/max_user_watches</span>
+<span style="color:#75715e"># cat /proc/sys/fs/inotify/max_user_watches</span>
+<span style="color:#ae81ff">8192</span>
+<span style="color:#75715e"># echo 524288 &gt; /proc/sys/fs/inotify/max_user_watches</span>
+<span style="color:#75715e"># cat /proc/sys/fs/inotify/max_user_watches</span>
+<span style="color:#ae81ff">524288</span>
+</code></pre></div><p>Works like a bought one! 😉</p>
+<p>To make the change to <strong>fs.inotify.max_user_watches</strong> permenant, ie not lost between reboots, you can add it to <strong>/etc/sysctl.conf</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">echo fs.inotify.max_user_watches<span style="color:#f92672">=</span><span style="color:#ae81ff">524288</span> | sudo tee -a /etc/sysctl.conf <span style="color:#f92672">&amp;&amp;</span> sudo sysctl -p
+</code></pre></div><h2 id="tldr">TL;DR</h2>
+<p>So, this could be a viable option if
+A) You run your own hardware
+B) You aren&rsquo;t running on some VM under OpenVZ</p>
+<p>Unfortunately that&rsquo;s not the situation I&rsquo;m in right now 😒</p>
+
+
+<hr />
+
+<div class="tags">
+  <strong>Tags:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/debian">#Debian</a>
+  
+  
+  <a href="https://jarrod.linahan.id.au/tags/linux">#linux</a>
+  
+  
+</div>
+
+
+<div class="categories">
+  <strong>Categories:</strong>
+  
+  
+  
+  <a href="https://jarrod.linahan.id.au/categories/tech">Tech</a>
+  
+  
+</div>
+
+
+
+<hr />
+<div style="display: flex;">
+  <a href="/blog/grep-in-cpanel-or-shared-hosting-environment/">&lsaquo; Previous Post</a>
+  <a style="margin-left: auto" href="/blog/compressing-png-images-from-command-line/">Next Post &rsaquo;</a>
+</div>
+
+
+</article>
+
+<hr />
+<script type="text/javascript">
+  
+  document.write(`
+    <script src="https://utteranc.es/client.js"
+        repo="nahanil/nahanil.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        ><\/script>
+    `)
+    
+</script>
+
+
+
+        </main><script async defer data-domain="jarrod.linahan.id.au" src="https://t.istry.com/js/plausible.js"></script>
+<script type="text/javascript">
+;(() => {
+  
+  Array.prototype.forEach.call(
+    document.getElementsByClassName('js'),
+    (el) => {
+      el.style.display = 'block'
+    }
+  )
+})();
+
+;(() => {
+  const lsKey = 'theme'
+
+  
+  const it = getTheme()
+  setTheme(it)
+  setCommentTheme(it)
+
+  
+  const els = document.getElementsByClassName('btn-theme')
+  Array.prototype.forEach.call(els, (el) => {
+    el.addEventListener('click', toggleTheme)
+  })
+
+  
+  function toggleTheme (e) {
+    e.preventDefault()
+    setTheme(getTheme() === 'light' ? 'dark' : 'light')
+  }
+
+  function getPreferredTheme () {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getTheme () {
+    return localStorage.getItem(lsKey) || getPreferredTheme()
+  }
+
+  function setTheme (to) {
+    document.body.classList.remove(`theme-${to === 'light' ? 'dark' : 'light'}`)
+    document.body.classList.add(`theme-${to}`)
+    setCommentTheme(to)
+    localStorage.setItem(lsKey, to)
+  }
+
+  function setCommentTheme(theme) {
+    const frames = document.querySelectorAll('.utterances-frame')
+    frames.forEach(f => {
+      f.src = f.src.replace(/github-(light|dark)/g, `github-${theme}`)
+    })
+  }
+})()
+</script>
+</body>
+</html>

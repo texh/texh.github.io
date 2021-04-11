@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>server on Jarrod Linahan</title>
+    <link>https://jarrod.linahan.id.au/tags/server/</link>
+    <description>Recent content in server on Jarrod Linahan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Sep 2018 02:11:11 +0000</lastBuildDate><atom:link href="https://jarrod.linahan.id.au/tags/server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Allowing only CloudFlare traffic to web server</title>
+      <link>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</link>
+      <pubDate>Wed, 19 Sep 2018 02:11:11 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/allow-only-cloudflare-traffic-to-web-server/</guid>
+      <description>The other day I had a somewhat panicked client come to me, worried by threats of DDoS attacks by some rogue user. In order to reduce the attack vector in case said bad actor made good on their threats, I thought it might not be a terrible idea to disallow all HTTP(S) traffic that doesn&amp;rsquo;t come from CloudFlare. The client already utilises them for caching and load balancing, and their website claims that they are there to help in such situations.</description>
+    </item>
+    
+    <item>
+      <title>Grep in cPanel or Shared Hosting Environment</title>
+      <link>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</link>
+      <pubDate>Thu, 28 Jun 2018 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/grep-in-cpanel-or-shared-hosting-environment/</guid>
+      <description>Being a command-line geek myself, it can be a massive pain in the ass not having SSH access to a client&amp;rsquo;s hosting service. Simple things like finding where a previous developer has declared some variable or template code can become what feels like a never-ending nightmare.
+Never mind dear, PHP to the rescue…
+&amp;lt;?php header(&amp;#34;Content-Type: text/plain&amp;#34;); // Replace $search with what you&amp;#39;re looking for // You could always make it a $_GET param.</description>
+    </item>
+    
+    <item>
+      <title>LNPPCF vs. LAMP</title>
+      <link>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</link>
+      <pubDate>Tue, 16 Apr 2013 01:03:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/lnppcf-vs-lamp/</guid>
+      <description>Every day it seems that someone is writing introductions and reviews about how awesome using the so-coined LAMP (Linux, Apache, MySQL &amp;amp; PHP) stack is. I too was once a lover of this choice of software for getting things online, however over the past few years I’ve slowly replaced most of those with other free alternatives and haven’t looked back for a moment. This website, along with most others that I look after nowadays, are running what I guess you could call a LNPPCF stack.</description>
+    </item>
+    
+    <item>
+      <title>Getting up and running with Nginx [CentOS]</title>
+      <link>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</link>
+      <pubDate>Tue, 14 Aug 2012 09:00:00 +0000</pubDate>
+      
+      <guid>https://jarrod.linahan.id.au/blog/getting-up-and-running-with-nginx/</guid>
+      <description>While I&amp;rsquo;m on the topic of upgrading and installing server software, why not go quickly into how I get nginx set up on my centOS boxes.
+It&amp;rsquo;s a super simple process as there&amp;rsquo;s an official RHEL/centOS nginx yum repository.
+Basically, given a new server I would remove apache/httpd with
+yum remove httpd Then create a file named /etc/yum.repos.d/nginx.repo and paste the configuration below within it:
+[nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/$releasever/$basearch/ gpgcheck=0 enabled=1 Then it&amp;rsquo;s a simply matter of running</description>
+    </item>
+    
+  </channel>
+</rss>
